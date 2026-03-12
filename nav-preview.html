@@ -7,12 +7,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;display:flex;flex-direction:column;gap:5rem}
-.label{text-align:center;font-size:0.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#013060;margin-bottom:1rem}
-.title{text-align:center;font-size:1.5rem;font-weight:700;color:#1a1b2e;margin-bottom:0.4rem}
+body{font-weight:300;font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;display:flex;flex-direction:column;gap:5rem}
+.label{text-align:center;font-size:0.75rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:#013060;margin-bottom:1rem}
+.title{text-align:center;font-size:1.5rem;font-weight:400;color:#1a1b2e;margin-bottom:0.4rem}
 .desc{text-align:center;font-size:0.85rem;color:#6b7280;margin-bottom:2rem}
 .nav-frame{border-radius:18px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.13);position:relative}
-.pick-btn{display:block;margin:1.2rem auto 0;padding:0.55rem 2rem;border-radius:10px;background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;font-size:0.85rem;font-weight:600;border:none;cursor:pointer;letter-spacing:.02em;box-shadow:0 4px 14px rgba(1,48,96,0.25);transition:opacity .2s}
+.pick-btn{display:block;margin:1.2rem auto 0;padding:0.55rem 2rem;border-radius:10px;background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;font-size:0.85rem;font-weight:300;border:none;cursor:pointer;letter-spacing:.02em;box-shadow:0 4px 14px rgba(1,48,96,0.25);transition:opacity .2s}
 .pick-btn:hover{opacity:.85}
 
 /* ─────────────── STYLE 1: Floating Pill (CURRENT) ─────────────── */
@@ -27,7 +27,7 @@ body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;displ
 .s1-logo img{height:30px;display:block}
 .s1-links{display:flex;gap:1.6rem;list-style:none}
 .s1-links a{color:#6b7280;text-decoration:none;font-size:0.83rem;font-weight:500}
-.s1-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:600;text-decoration:none}
+.s1-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:300;text-decoration:none}
 
 /* ─────────────── STYLE 2: Full-width Flat Bar ─────────────── */
 .s2-wrap{background:#fff}
@@ -40,8 +40,8 @@ body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;displ
 .s2-links a{color:#6b7280;text-decoration:none;font-size:0.85rem;font-weight:500;padding-bottom:2px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
 .s2-links a:hover{color:#013060;border-color:#013060}
 .s2-right{display:flex;align-items:center;gap:1rem}
-.s2-login{color:#013060;font-size:0.83rem;font-weight:600;text-decoration:none}
-.s2-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.48rem 1.3rem;border-radius:9px;font-size:0.82rem;font-weight:600;text-decoration:none}
+.s2-login{color:#013060;font-size:0.83rem;font-weight:300;text-decoration:none}
+.s2-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.48rem 1.3rem;border-radius:9px;font-size:0.82rem;font-weight:300;text-decoration:none}
 
 /* ─────────────── STYLE 3: Dark Glassmorphism Bar ─────────────── */
 .s3-wrap{background:linear-gradient(135deg,#0d0e1c,#1a1b3e);padding:1.5rem 2rem 3rem}
@@ -54,7 +54,7 @@ body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;displ
 .s3-links{display:flex;gap:1.8rem;list-style:none}
 .s3-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.83rem;font-weight:500;transition:color .2s}
 .s3-links a:hover{color:#fff}
-.s3-cta{background:linear-gradient(135deg,#013060,#E97131);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:600;text-decoration:none}
+.s3-cta{background:linear-gradient(135deg,#013060,#E97131);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:300;text-decoration:none}
 
 /* ─────────────── STYLE 4: Centered Logo + Split Links ─────────────── */
 .s4-wrap{background:#fff}
@@ -67,7 +67,7 @@ body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;displ
 .s4-right{display:flex;gap:1.6rem;list-style:none;align-items:center}
 .s4-center{position:absolute;left:50%;transform:translateX(-50%)}
 .s4-left a,.s4-right a{color:#6b7280;text-decoration:none;font-size:0.83rem;font-weight:500}
-.s4-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff!important;padding:0.42rem 1.1rem;border-radius:9px;font-size:0.82rem;font-weight:600}
+.s4-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff!important;padding:0.42rem 1.1rem;border-radius:9px;font-size:0.82rem;font-weight:300}
 
 /* ─────────────── STYLE 5: Gradient Border Pill ─────────────── */
 .s5-wrap{background:#f7f8ff;padding:1.5rem 2rem 3rem}
@@ -80,7 +80,7 @@ body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;displ
 .s5-links{display:flex;gap:1.6rem;list-style:none}
 .s5-links a{color:#6b7280;text-decoration:none;font-size:0.83rem;font-weight:500;transition:color .2s}
 .s5-links a:hover{color:#013060}
-.s5-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:600;text-decoration:none}
+.s5-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:300;text-decoration:none}
 
 /* ─────────────── STYLE 6: Minimal Top Strip + Accent Underline ─────────────── */
 .s6-wrap{background:#fff}
@@ -94,9 +94,9 @@ body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;displ
 .s6-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,#013060,#E97131);border-radius:2px;transition:width .25s}
 .s6-links a:hover::after{width:100%}
 .s6-right{display:flex;gap:0.8rem;align-items:center}
-.s6-login{border:1.5px solid #013060;color:#013060;padding:0.42rem 1.1rem;border-radius:9px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:background .2s}
+.s6-login{border:1.5px solid #013060;color:#013060;padding:0.42rem 1.1rem;border-radius:9px;font-size:0.82rem;font-weight:300;text-decoration:none;transition:background .2s}
 .s6-login:hover{background:#013060;color:#fff}
-.s6-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:600;text-decoration:none}
+.s6-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.45rem 1.2rem;border-radius:9px;font-size:0.82rem;font-weight:300;text-decoration:none}
 
 /* ─────────────── STYLE 7: Sidebar-style Mega Header ─────────────── */
 .s7-wrap{background:#f7f8ff;padding:1.5rem 2rem 3rem}
@@ -110,10 +110,10 @@ body{font-family:'Poppins',sans-serif;background:#f0f1fa;padding:3rem 2rem;displ
 .s7-bottom li a{display:block;padding:0.7rem 1.4rem;font-size:0.82rem;font-weight:500;color:#6b7280;text-decoration:none;border-right:1px solid #e5e7f0;transition:background .2s,color .2s}
 .s7-bottom li a:hover{background:#f7f8ff;color:#013060}
 .s7-bottom li:last-child a{border-right:none}
-.s7-badge{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;font-size:0.7rem;padding:0.15rem 0.45rem;border-radius:5px;font-weight:700;margin-left:0.4rem;vertical-align:middle}
+.s7-badge{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;font-size:0.7rem;padding:0.15rem 0.45rem;border-radius:5px;font-weight:400;margin-left:0.4rem;vertical-align:middle}
 .s7-right{display:flex;gap:0.8rem;align-items:center}
-.s7-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.42rem 1.1rem;border-radius:9px;font-size:0.82rem;font-weight:600;text-decoration:none}
-.s7-login{color:#013060;font-size:0.82rem;font-weight:600;text-decoration:none}
+.s7-cta{background:linear-gradient(135deg,#013060,#1a5a9a);color:#fff;padding:0.42rem 1.1rem;border-radius:9px;font-size:0.82rem;font-weight:300;text-decoration:none}
+.s7-login{color:#013060;font-size:0.82rem;font-weight:300;text-decoration:none}
 </style>
 </head>
 <body>
