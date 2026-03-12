@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Press & Media — MeeruAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--purple:#7c3aed;--blue:#2563eb;--cyan:#06b6d4;--text:#1a1b2e;--muted:#6b7280;--border:#e5e7f0;--bg2:#f7f8ff;--grad:linear-gradient(135deg,#7c3aed,#2563eb,#06b6d4)}
+body{font-family:'Inter',sans-serif;background:#fff;color:var(--text)}
+nav{position:fixed;top:1.2rem;left:50%;transform:translateX(-50%);z-index:1000;width:calc(100% - 4rem);max-width:1100px;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);border:1px solid rgba(0,0,0,0.07);border-radius:16px;padding:0.9rem 1.8rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,0.06)}
+.nav-logo{text-decoration:none}
+.nav-links{display:flex;gap:1.4rem;list-style:none;align-items:center}
+.nav-links>li{position:relative}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.87rem;font-weight:500;transition:color .3s;display:flex;align-items:center;gap:.3rem;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-links>li>a.has-drop::after{content:'';display:inline-block;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .25s;margin-left:2px}
+.nav-links>li:hover>a.has-drop::after{transform:rotate(-135deg) translateY(-2px)}
+.drop-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(0);padding-top:.75rem;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:.5rem;min-width:210px;box-shadow:0 12px 40px rgba(0,0,0,.1);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:2000;list-style:none}
+.nav-links>li .drop-menu.drop-open{opacity:1;pointer-events:auto}
+.drop-menu li a{display:block;padding:.6rem .9rem;border-radius:9px;color:var(--text);font-size:.84rem;font-weight:500;text-decoration:none;transition:background .18s,color .18s;white-space:nowrap}
+.drop-menu li a:hover{background:var(--bg2);color:var(--purple)}
+.drop-divider{height:1px;background:var(--border);margin:.35rem .5rem}
+.nav-cta{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff!important;padding:.5rem 1.3rem;border-radius:10px;font-weight:600;font-size:.85rem;box-shadow:0 4px 15px rgba(124,58,237,.25)}
+.active-link{color:var(--purple)!important;font-weight:600!important}
+.page-hero{padding:10rem 5% 5rem;background:var(--bg2);text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.badge{display:inline-block;background:linear-gradient(135deg,rgba(124,58,237,.1),rgba(37,99,235,.1));color:var(--purple);font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.4rem 1rem;border-radius:50px;border:1px solid rgba(124,58,237,.2);margin-bottom:1.5rem}
+.page-hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.15;letter-spacing:-1.5px;margin-bottom:1.2rem}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-hero p{max-width:600px;margin:0 auto 2.5rem;color:var(--muted);font-size:1.05rem;line-height:1.7}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--grad);color:#fff;padding:.75rem 2rem;border-radius:12px;font-weight:700;font-size:.95rem;text-decoration:none;box-shadow:0 4px 20px rgba(124,58,237,.3);transition:opacity .2s,transform .2s}
+.btn-primary:hover{opacity:.9;transform:translateY(-2px)}
+.btn-outline{border:1.5px solid var(--border);color:var(--text);padding:.75rem 2rem;border-radius:12px;font-weight:600;font-size:.95rem;text-decoration:none;transition:border-color .2s,color .2s}
+.btn-outline:hover{border-color:var(--purple);color:var(--purple)}
+.section{padding:6rem 5%}
+.section-label{text-align:center;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:.8rem}
+.section-title{text-align:center;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:1rem}
+.section-sub{text-align:center;color:var(--muted);max-width:550px;margin:0 auto 4rem;line-height:1.7}
+.press-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto}
+.press-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:2rem;transition:box-shadow .3s,transform .3s;display:flex;flex-direction:column;gap:.8rem}
+.press-card:hover{box-shadow:0 12px 40px rgba(124,58,237,.1);transform:translateY(-4px)}
+.press-outlet{font-size:.75rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--purple)}
+.press-date{font-size:.78rem;color:var(--muted);font-weight:500}
+.press-headline{font-size:1rem;font-weight:700;line-height:1.4;flex:1}
+.press-read{display:inline-block;margin-top:.5rem;color:var(--purple);font-size:.85rem;font-weight:600;text-decoration:none;transition:opacity .2s}
+.press-read:hover{opacity:.7}
+.how-section{background:var(--bg2);padding:6rem 5%}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;max-width:1000px;margin:0 auto}
+.step{text-align:center;padding:2rem 1.5rem}
+.step-num{width:48px;height:48px;border-radius:50%;background:var(--grad);color:#fff;font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem}
+.step h3{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.step p{color:var(--muted);font-size:.86rem;line-height:1.6}
+.cta-banner{background:linear-gradient(135deg,#7c3aed,#2563eb);padding:5rem 5%;text-align:center;color:#fff}
+.cta-banner h2{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;margin-bottom:1rem}
+.cta-banner p{opacity:.85;margin-bottom:2rem;font-size:1rem}
+.btn-white{background:#fff;color:var(--purple);padding:.75rem 2rem;border-radius:12px;font-weight:700;font-size:.95rem;text-decoration:none;transition:opacity .2s}
+.btn-white:hover{opacity:.9}
+footer{background:#0d0e1c;color:rgba(255,255,255,.5);text-align:center;padding:2rem;font-size:.83rem}
+footer a{color:rgba(255,255,255,.7);text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.svg" alt="MeeruAI" height="52" style="display:block"/></a>
+  <ul class="nav-links">
+    <li>
+      <a href="#" class="has-drop" onclick="return false">Platform</a>
+      <ul class="drop-menu">
+        <li><a href="reporting-analytics.html">Reporting & Analytics</a></li>
+        <li><a href="accounting-integrations.html">Accounting Integrations</a></li>
+        <li><a href="planning-budgeting.html">Planning & Budgeting</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="has-drop" onclick="return false">How It Works</a>
+      <ul class="drop-menu">
+        <li><a href="for-finance-teams.html">For Finance Teams</a></li>
+        <li><a href="for-controllers.html">For Controllers</a></li>
+        <li><a href="for-cfos.html">For CFOs</a></li>
+        <div class="drop-divider"></div>
+        <li><a href="see-demo.html">See a Live Demo</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="has-drop active-link" onclick="return false">About Us</a>
+      <ul class="drop-menu">
+        <li><a href="our-story.html">Our Story</a></li>
+        <li><a href="leadership.html">Leadership</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <div class="drop-divider"></div>
+        <li><a href="press.html">Press & Media</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="has-drop" onclick="return false">Contact</a>
+      <ul class="drop-menu">
+        <li><a href="request-demo.html">Request Demo</a></li>
+        <li><a href="talk-to-sales.html">Talk to Sales</a></li>
+        <li><a href="support.html">Support</a></li>
+      </ul>
+    </li>
+    <li><a href="request-demo.html" class="nav-cta">Request Demo</a></li>
+  </ul>
+</nav>
+
+<section class="page-hero">
+  <div class="badge">About Us — Press</div>
+  <h1>MeeruAI in<br/><span class="grad-text">The News</span></h1>
+  <p>From funding announcements to product launches, here's what leading business and technology publications have been saying about MeeruAI and the future of AI-powered finance.</p>
+  <div class="hero-btns">
+    <a href="contact.html" class="btn-primary">Media Inquiries</a>
+    <a href="our-story.html" class="btn-outline">About MeeruAI</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-label">Press Coverage</div>
+  <h2 class="section-title">Recent Press Mentions</h2>
+  <p class="section-sub">MeeruAI has been featured in leading business, finance, and technology media around the world.</p>
+  <div class="press-grid">
+    <div class="press-card">
+      <div class="press-outlet">TechCrunch</div>
+      <div class="press-date">November 2024</div>
+      <div class="press-headline">"MeeruAI closes $9M Series A to bring AI-powered automation to mid-market finance teams"</div>
+      <a href="#" class="press-read">Read Article →</a>
+    </div>
+    <div class="press-card">
+      <div class="press-outlet">Forbes</div>
+      <div class="press-date">September 2024</div>
+      <div class="press-headline">"The 25 Most Promising Fintech Startups Reshaping How Businesses Manage Money"</div>
+      <a href="#" class="press-read">Read Article →</a>
+    </div>
+    <div class="press-card">
+      <div class="press-outlet">CFO Magazine</div>
+      <div class="press-date">August 2024</div>
+      <div class="press-headline">"How AI is finally delivering on its promise to transform the month-end close"</div>
+      <a href="#" class="press-read">Read Article →</a>
+    </div>
+    <div class="press-card">
+      <div class="press-outlet">Wall Street Journal</div>
+      <div class="press-date">June 2024</div>
+      <div class="press-headline">"Finance software startups are racing to automate the work that accountants hate most"</div>
+      <a href="#" class="press-read">Read Article →</a>
+    </div>
+    <div class="press-card">
+      <div class="press-outlet">Business Insider</div>
+      <div class="press-date">March 2024</div>
+      <div class="press-headline">"Meet the ex-Deloitte duo building the finance platform that 500 companies quietly rely on"</div>
+      <a href="#" class="press-read">Read Article →</a>
+    </div>
+    <div class="press-card">
+      <div class="press-outlet">Fast Company</div>
+      <div class="press-date">January 2024</div>
+      <div class="press-headline">"Most Innovative Companies in Finance 2024: MeeruAI is making the monthly close obsolete"</div>
+      <a href="#" class="press-read">Read Article →</a>
+    </div>
+  </div>
+</section>
+
+<section class="how-section">
+  <div class="section-label">For Journalists</div>
+  <h2 class="section-title">Media Resources</h2>
+  <p class="section-sub">Everything you need to cover MeeruAI accurately and completely. For interviews or press kit access, contact our media team.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Press Kit</h3>
+      <p>Logos, brand guidelines, executive headshots, and approved company descriptions in multiple formats. Available on request to verified journalists.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Executive Interviews</h3>
+      <p>CEO Anika Sharma and CTO Ravi Mehta are available for interviews on AI in finance, the future of financial automation, and startup building.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Customer Stories</h3>
+      <p>We can connect journalists with MeeruAI customers who are willing to share their experience on the record. Typical response time: 48 hours.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Data & Research</h3>
+      <p>MeeruAI publishes an annual State of Finance Operations report with original research on trends in finance team automation and AI adoption.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <h2>Media Inquiry?</h2>
+  <p>Reach our communications team at press@meeruai.com or use the form below.</p>
+  <a href="contact.html" class="btn-white">Contact Press Team</a>
+</section>
+
+<footer>
+  <p>&copy; 2025 MeeruAI Inc. &nbsp;|&nbsp; <a href="contact.html">Contact</a> &nbsp;|&nbsp; <a href="support.html">Support</a> &nbsp;|&nbsp; Privacy Policy</p>
+</footer>
+
+<script>
+(function(){
+  var items=document.querySelectorAll(".nav-links>li");
+  items.forEach(function(li){
+    var menu=li.querySelector(".drop-menu");
+    if(!menu)return;
+    var t;
+    function show(){clearTimeout(t);menu.classList.add("drop-open");}
+    function hide(){t=setTimeout(function(){menu.classList.remove("drop-open");},180);}
+    li.addEventListener("mouseenter",show);
+    li.addEventListener("mouseleave",hide);
+    menu.addEventListener("mouseenter",show);
+    menu.addEventListener("mouseleave",hide);
+  });
+})();
+</script>
+</body>
+</html>
