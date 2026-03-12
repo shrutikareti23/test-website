@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Marquee Style Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#013060;--blue:#1a5a9a;--cyan:#E97131;
+  --dark:#0d0e1c;--text:#1a1b2e;--muted:#6b7280;
+  --border:#e5e7f0;--bg:#ffffff;--bg2:#f7f8ff;
+  --grad:linear-gradient(135deg,#013060,#1a5a9a,#E97131);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#f0f1fa;color:var(--text);overflow-x:hidden;padding-top:58px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* TOP NAV */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0.75rem 2rem;display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap
+}
+.top-nav h1{font-size:0.9rem;font-weight:800;color:var(--dark);margin-right:0.5rem}
+.top-nav h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.np{display:inline-flex;align-items:center;gap:0.35rem;background:var(--bg2);border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:100px;font-size:0.73rem;font-weight:600;color:var(--muted);text-decoration:none;transition:all 0.2s;white-space:nowrap}
+.np:hover,.np.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.np .n{width:16px;height:16px;border-radius:50%;background:var(--purple);color:#fff;font-size:0.6rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+.np:hover .n,.np.active .n{background:rgba(255,255,255,0.3)}
+
+/* SECTION WRAPPER */
+.sg{margin:2rem 2.5rem 5rem}
+.sh{text-align:center;padding:1.5rem 0 1rem;display:flex;flex-direction:column;align-items:center;gap:0.4rem}
+.sbadge{display:inline-flex;align-items:center;background:var(--purple);color:#fff;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0.3rem 0.9rem;border-radius:100px}
+.sh h2{font-size:1.7rem;font-weight:900;color:var(--dark);letter-spacing:-0.8px}
+.sh p{font-size:0.83rem;color:var(--muted);max-width:400px}
+.sdiv{height:3px;width:50px;background:var(--grad);border-radius:2px;margin:0 auto}
+.sw{background:#fff;border-radius:20px;border:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,0.06);overflow:hidden}
+
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ═══════════════════════════════════
+   1 — LOGO GRID FADE-IN
+═══════════════════════════════════ */
+.logo-grid-wrap{padding:3.5rem 3rem;background:#fff}
+.lg-header{text-align:center;margin-bottom:2.5rem}
+.lg-header p{font-size:0.82rem;color:var(--muted);margin-top:0.4rem}
+.lg-header strong{font-size:1.1rem;font-weight:800;color:var(--dark)}
+.logo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+.lg-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:14px;padding:1.2rem 1rem;
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  opacity:0;transform:translateY(16px) scale(0.95);
+  transition:opacity 0.5s,transform 0.5s,border-color 0.3s,box-shadow 0.3s,background 0.3s
+}
+.lg-item.on{opacity:1;transform:none}
+.lg-item:hover{background:#fff;border-color:rgba(1,48,96,0.25);box-shadow:0 8px 24px rgba(1,48,96,0.08);transform:translateY(-4px)}
+.lg-emoji{font-size:1.6rem}
+.lg-name{font-size:0.78rem;font-weight:700;color:var(--dark)}
+.lg-sub{font-size:0.68rem;color:var(--muted)}
+
+/* ═══════════════════════════════════
+   2 — INFINITE SCROLL CARDS
+═══════════════════════════════════ */
+.cardticker-wrap{padding:2.5rem 0;background:var(--bg2);overflow:hidden;position:relative}
+.cardticker-wrap::before,.cardticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none}
+.cardticker-wrap::before{left:0;background:linear-gradient(90deg,var(--bg2),transparent)}
+.cardticker-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg2),transparent)}
+.cardticker-wrap .ct-label{text-align:center;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem}
+.ct-track{display:flex;gap:1rem;width:max-content;animation:ctick 30s linear infinite}
+.ct-track:hover{animation-play-state:paused}
+@keyframes ctick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ct-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:14px;padding:1rem 1.3rem;
+  display:flex;align-items:center;gap:0.9rem;
+  min-width:220px;flex-shrink:0;
+  transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s
+}
+.ct-card:hover{border-color:rgba(1,48,96,0.25);box-shadow:0 8px 24px rgba(1,48,96,0.08);transform:translateY(-3px)}
+.ct-icon{font-size:1.5rem;flex-shrink:0}
+.ct-name{font-size:0.85rem;font-weight:700;color:var(--dark)}
+.ct-stat{font-size:0.72rem;color:var(--purple);font-weight:600;margin-top:0.1rem}
+
+/* ═══════════════════════════════════
+   3 — TWO-ROW OPPOSITE MARQUEE
+═══════════════════════════════════ */
+.dualrow-wrap{padding:2.5rem 0;background:#fff;overflow:hidden;position:relative}
+.dualrow-wrap::before,.dualrow-wrap::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none}
+.dualrow-wrap::before{left:0;background:linear-gradient(90deg,#fff,transparent)}
+.dualrow-wrap::after{right:0;background:linear-gradient(-90deg,#fff,transparent)}
+.dr-label{text-align:center;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem}
+.dr-row{display:flex;gap:0;width:max-content;margin-bottom:0.7rem}
+.dr-row.fwd{animation:drfwd 22s linear infinite}
+.dr-row.rev{animation:drrev 22s linear infinite}
+.dr-row.fwd:hover,.dr-row.rev:hover{animation-play-state:paused}
+@keyframes drfwd{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes drrev{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+.dr-item{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.55rem 1.2rem;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:100px;margin-right:0.7rem;
+  font-size:0.8rem;font-weight:600;color:var(--text);
+  white-space:nowrap;transition:background 0.3s,border-color 0.3s,color 0.3s
+}
+.dr-item:hover{background:rgba(1,48,96,0.07);border-color:rgba(1,48,96,0.2);color:var(--purple)}
+.dr-item.stat{background:rgba(1,48,96,0.06);border-color:rgba(1,48,96,0.15);color:var(--purple)}
+.dr-item .di{font-size:0.9rem}
+
+/* ═══════════════════════════════════
+   4 — GLOW HOVER MARQUEE
+═══════════════════════════════════ */
+.glowticker-wrap{padding:2.5rem 0;background:var(--bg2);overflow:hidden;position:relative}
+.glowticker-wrap::before,.glowticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.glowticker-wrap::before{left:0;background:linear-gradient(90deg,var(--bg2),transparent)}
+.glowticker-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg2),transparent)}
+.gt-label{text-align:center;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem}
+.gt-track{display:flex;gap:0.8rem;width:max-content;animation:gtick 26s linear infinite}
+.gt-track:hover{animation-play-state:paused}
+@keyframes gtick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.gt-item{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  background:#fff;border:1px solid var(--border);
+  border-radius:14px;padding:0.7rem 1.3rem;
+  font-size:0.83rem;font-weight:600;color:var(--muted);
+  white-space:nowrap;flex-shrink:0;
+  transition:all 0.35s cubic-bezier(0.16,1,0.3,1);
+  position:relative;overflow:hidden
+}
+.gt-item::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(1,48,96,0.08),rgba(1,48,96,0.05));
+  opacity:0;transition:opacity 0.3s
+}
+.gt-item:hover{
+  color:var(--purple);border-color:rgba(1,48,96,0.3);
+  transform:translateY(-5px) scale(1.04);
+  box-shadow:0 10px 30px rgba(1,48,96,0.15);
+}
+.gt-item:hover::before{opacity:1}
+.gt-icon{font-size:1.1rem;position:relative;z-index:1}
+.gt-text{position:relative;z-index:1}
+
+/* ═══════════════════════════════════
+   5 — FADE ROTATOR
+═══════════════════════════════════ */
+.rotator-wrap{
+  padding:3rem 2rem;background:#fff;
+  display:flex;flex-direction:column;align-items:center;gap:1.2rem
+}
+.rot-prefix{font-size:0.82rem;color:var(--muted);font-weight:500}
+.rot-stage{
+  position:relative;height:56px;width:100%;max-width:500px;
+  display:flex;align-items:center;justify-content:center
+}
+.rot-word{
+  position:absolute;
+  font-size:clamp(1.4rem,4vw,2rem);font-weight:900;letter-spacing:-1px;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  opacity:0;transform:translateY(12px);
+  transition:opacity 0.6s,transform 0.6s;
+  white-space:nowrap
+}
+.rot-word.active{opacity:1;transform:translateY(0)}
+.rot-dots{display:flex;gap:0.4rem}
+.rot-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all 0.3s}
+.rot-dot.active{background:var(--purple);width:20px;border-radius:3px}
+.rot-companies{
+  display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;
+  max-width:500px
+}
+.rot-tag{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:100px;padding:0.3rem 0.8rem;
+  font-size:0.75rem;font-weight:600;color:var(--muted);
+  transition:all 0.3s
+}
+.rot-tag.highlight{background:rgba(1,48,96,0.08);border-color:rgba(1,48,96,0.2);color:var(--purple)}
+
+/* ═══════════════════════════════════
+   6 — COUNTER STRIP
+═══════════════════════════════════ */
+.counter-strip{
+  padding:2.5rem 3rem;background:var(--bg2);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0
+}
+.cs-item{
+  display:flex;flex-direction:column;align-items:center;
+  padding:1.5rem;border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+  transition:background 0.3s
+}
+.cs-item:last-child{border-right:none}
+.cs-item:hover{background:rgba(1,48,96,0.03)}
+.cs-item::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--grad);transform:scaleX(0);transform-origin:left;
+  transition:transform 0.4s
+}
+.cs-item:hover::before{transform:scaleX(1)}
+.cs-num{
+  font-size:2.2rem;font-weight:900;letter-spacing:-1.5px;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1
+}
+.cs-label{font-size:0.78rem;color:var(--muted);font-weight:600;margin-top:0.4rem;text-align:center}
+.cs-sub{font-size:0.68rem;color:var(--muted);opacity:0.6;margin-top:0.1rem}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <h1>Meeru<span>AI</span> — Marquee Styles</h1>
+  <a href="#s1" class="np"><span class="n">1</span> Logo Grid</a>
+  <a href="#s2" class="np"><span class="n">2</span> Scroll Cards</a>
+  <a href="#s3" class="np"><span class="n">3</span> Dual Row</a>
+  <a href="#s4" class="np"><span class="n">4</span> Glow Hover</a>
+  <a href="#s5" class="np"><span class="n">5</span> Fade Rotator</a>
+  <a href="#s6" class="np"><span class="n">6</span> Counter Strip</a>
+</div>
+
+
+<!-- ═══ 1 — LOGO GRID ═══ -->
+<div class="sg" id="s1">
+  <div class="sh">
+    <div class="sbadge">Style 1</div>
+    <h2>Logo Grid Fade-In</h2>
+    <p>Static grid of company tiles that fade and scale in one by one as you scroll into view. Clean, enterprise feel.</p>
+    <div class="sdiv"></div>
+  </div>
+  <div class="sw">
+    <div class="logo-grid-wrap">
+      <div class="lg-header">
+        <strong>Trusted by modern finance teams</strong>
+        <p>Joining 500+ companies already running on Meeru AI</p>
+      </div>
+      <div class="logo-grid" id="lgrid">
+        <div class="lg-item"><span class="lg-emoji">🏢</span><span class="lg-name">Airbnb</span><span class="lg-sub">4 days faster close</span></div>
+        <div class="lg-item"><span class="lg-emoji">💳</span><span class="lg-name">Stripe</span><span class="lg-sub">$2B reconciled</span></div>
+        <div class="lg-item"><span class="lg-emoji">🛍️</span><span class="lg-name">Shopify</span><span class="lg-sub">40h saved/month</span></div>
+        <div class="lg-item"><span class="lg-emoji">🚀</span><span class="lg-name">Notion</span><span class="lg-sub">99% accuracy</span></div>
+        <div class="lg-item"><span class="lg-emoji">🌐</span><span class="lg-name">Figma</span><span class="lg-sub">3x faster audits</span></div>
+        <div class="lg-item"><span class="lg-emoji">📦</span><span class="lg-name">Rippling</span><span class="lg-sub">Zero manual entry</span></div>
+        <div class="lg-item"><span class="lg-emoji">⚡</span><span class="lg-name">Brex</span><span class="lg-sub">Real-time forecasts</span></div>
+        <div class="lg-item"><span class="lg-emoji">🔷</span><span class="lg-name">Coupa</span><span class="lg-sub">SOC 2 compliant</span></div>
+        <div class="lg-item"><span class="lg-emoji">🎯</span><span class="lg-name">Carta</span><span class="lg-sub">10x ROI</span></div>
+        <div class="lg-item"><span class="lg-emoji">🏦</span><span class="lg-name">Mercury</span><span class="lg-sub">Audit-ready</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ 2 — SCROLL CARDS ═══ -->
+<div class="sg" id="s2">
+  <div class="sh">
+    <div class="sbadge">Style 2</div>
+    <h2>Infinite Scroll Cards</h2>
+    <p>Each item is a mini card with an icon and a real stat. Pauses on hover. More visual than a plain ticker.</p>
+    <div class="sdiv"></div>
+  </div>
+  <div class="sw">
+    <div class="cardticker-wrap">
+      <div class="ct-label">Trusted by 500+ finance teams worldwide</div>
+      <div class="ct-track">
+        <div class="ct-card"><span class="ct-icon">🏢</span><div><div class="ct-name">Airbnb</div><div class="ct-stat">Closed 4 days faster</div></div></div>
+        <div class="ct-card"><span class="ct-icon">💳</span><div><div class="ct-name">Stripe</div><div class="ct-stat">$2B auto-reconciled</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🛍️</span><div><div class="ct-name">Shopify</div><div class="ct-stat">40 hrs saved/month</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🚀</span><div><div class="ct-name">Notion</div><div class="ct-stat">99% accuracy rate</div></div></div>
+        <div class="ct-card"><span class="ct-icon">⚡</span><div><div class="ct-name">Brex</div><div class="ct-stat">Audit-ready in hours</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🔷</span><div><div class="ct-name">Coupa</div><div class="ct-stat">Zero manual entry</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🎯</span><div><div class="ct-name">Carta</div><div class="ct-stat">10× average ROI</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🏦</span><div><div class="ct-name">Mercury</div><div class="ct-stat">Real-time forecasts</div></div></div>
+        <!-- duplicate -->
+        <div class="ct-card"><span class="ct-icon">🏢</span><div><div class="ct-name">Airbnb</div><div class="ct-stat">Closed 4 days faster</div></div></div>
+        <div class="ct-card"><span class="ct-icon">💳</span><div><div class="ct-name">Stripe</div><div class="ct-stat">$2B auto-reconciled</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🛍️</span><div><div class="ct-name">Shopify</div><div class="ct-stat">40 hrs saved/month</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🚀</span><div><div class="ct-name">Notion</div><div class="ct-stat">99% accuracy rate</div></div></div>
+        <div class="ct-card"><span class="ct-icon">⚡</span><div><div class="ct-name">Brex</div><div class="ct-stat">Audit-ready in hours</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🔷</span><div><div class="ct-name">Coupa</div><div class="ct-stat">Zero manual entry</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🎯</span><div><div class="ct-name">Carta</div><div class="ct-stat">10× average ROI</div></div></div>
+        <div class="ct-card"><span class="ct-icon">🏦</span><div><div class="ct-name">Mercury</div><div class="ct-stat">Real-time forecasts</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ 3 — DUAL ROW ═══ -->
+<div class="sg" id="s3">
+  <div class="sh">
+    <div class="sbadge">Style 3</div>
+    <h2>Two-Row Opposite Marquee</h2>
+    <p>Two rows — top scrolls left with company names, bottom scrolls right with live-looking stats. Eye-catching contrast.</p>
+    <div class="sdiv"></div>
+  </div>
+  <div class="sw">
+    <div class="dualrow-wrap">
+      <div class="dr-label">Trusted by modern finance teams · scroll pauses on hover</div>
+      <!-- row 1: companies going left -->
+      <div class="dr-row fwd">
+        <span class="dr-item"><span class="di">🏢</span> Airbnb</span>
+        <span class="dr-item"><span class="di">💳</span> Stripe</span>
+        <span class="dr-item"><span class="di">🛍️</span> Shopify</span>
+        <span class="dr-item"><span class="di">🚀</span> Notion</span>
+        <span class="dr-item"><span class="di">🌐</span> Figma</span>
+        <span class="dr-item"><span class="di">📦</span> Rippling</span>
+        <span class="dr-item"><span class="di">⚡</span> Brex</span>
+        <span class="dr-item"><span class="di">🔷</span> Coupa</span>
+        <span class="dr-item"><span class="di">🎯</span> Carta</span>
+        <span class="dr-item"><span class="di">🏦</span> Mercury</span>
+        <!-- dup -->
+        <span class="dr-item"><span class="di">🏢</span> Airbnb</span>
+        <span class="dr-item"><span class="di">💳</span> Stripe</span>
+        <span class="dr-item"><span class="di">🛍️</span> Shopify</span>
+        <span class="dr-item"><span class="di">🚀</span> Notion</span>
+        <span class="dr-item"><span class="di">🌐</span> Figma</span>
+        <span class="dr-item"><span class="di">📦</span> Rippling</span>
+        <span class="dr-item"><span class="di">⚡</span> Brex</span>
+        <span class="dr-item"><span class="di">🔷</span> Coupa</span>
+        <span class="dr-item"><span class="di">🎯</span> Carta</span>
+        <span class="dr-item"><span class="di">🏦</span> Mercury</span>
+      </div>
+      <!-- row 2: stats going right -->
+      <div class="dr-row rev">
+        <span class="dr-item stat">⚡ 4 days faster close</span>
+        <span class="dr-item stat">✅ $2B reconciled</span>
+        <span class="dr-item stat">🧠 40 hrs saved/month</span>
+        <span class="dr-item stat">📈 99% accuracy</span>
+        <span class="dr-item stat">🛡️ Audit-ready in hours</span>
+        <span class="dr-item stat">🔗 40+ integrations</span>
+        <span class="dr-item stat">💡 10× ROI</span>
+        <span class="dr-item stat">🌐 500+ teams</span>
+        <span class="dr-item stat">⚡ 4 days faster close</span>
+        <span class="dr-item stat">✅ $2B reconciled</span>
+        <span class="dr-item stat">🧠 40 hrs saved/month</span>
+        <span class="dr-item stat">📈 99% accuracy</span>
+        <span class="dr-item stat">🛡️ Audit-ready in hours</span>
+        <span class="dr-item stat">🔗 40+ integrations</span>
+        <span class="dr-item stat">💡 10× ROI</span>
+        <span class="dr-item stat">🌐 500+ teams</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ 4 — GLOW HOVER ═══ -->
+<div class="sg" id="s4">
+  <div class="sh">
+    <div class="sbadge">Style 4</div>
+    <h2>Glow Hover Marquee</h2>
+    <p>Frosted pill items glow purple, lift, and reveal a gradient on hover. Very satisfying interaction.</p>
+    <div class="sdiv"></div>
+  </div>
+  <div class="sw">
+    <div class="glowticker-wrap">
+      <div class="gt-label">Hover over any item · scroll pauses on hover</div>
+      <div class="gt-track">
+        <span class="gt-item"><span class="gt-icon">🏢</span><span class="gt-text">Airbnb</span></span>
+        <span class="gt-item"><span class="gt-icon">💳</span><span class="gt-text">Stripe</span></span>
+        <span class="gt-item"><span class="gt-icon">🛍️</span><span class="gt-text">Shopify</span></span>
+        <span class="gt-item"><span class="gt-icon">🚀</span><span class="gt-text">Notion</span></span>
+        <span class="gt-item"><span class="gt-icon">🌐</span><span class="gt-text">Figma</span></span>
+        <span class="gt-item"><span class="gt-icon">📦</span><span class="gt-text">Rippling</span></span>
+        <span class="gt-item"><span class="gt-icon">⚡</span><span class="gt-text">Brex</span></span>
+        <span class="gt-item"><span class="gt-icon">🔷</span><span class="gt-text">Coupa</span></span>
+        <span class="gt-item"><span class="gt-icon">🎯</span><span class="gt-text">Carta</span></span>
+        <span class="gt-item"><span class="gt-icon">🏦</span><span class="gt-text">Mercury</span></span>
+        <span class="gt-item"><span class="gt-icon">🌿</span><span class="gt-text">Watershed</span></span>
+        <span class="gt-item"><span class="gt-icon">🔬</span><span class="gt-text">Benchling</span></span>
+        <!-- dup -->
+        <span class="gt-item"><span class="gt-icon">🏢</span><span class="gt-text">Airbnb</span></span>
+        <span class="gt-item"><span class="gt-icon">💳</span><span class="gt-text">Stripe</span></span>
+        <span class="gt-item"><span class="gt-icon">🛍️</span><span class="gt-text">Shopify</span></span>
+        <span class="gt-item"><span class="gt-icon">🚀</span><span class="gt-text">Notion</span></span>
+        <span class="gt-item"><span class="gt-icon">🌐</span><span class="gt-text">Figma</span></span>
+        <span class="gt-item"><span class="gt-icon">📦</span><span class="gt-text">Rippling</span></span>
+        <span class="gt-item"><span class="gt-icon">⚡</span><span class="gt-text">Brex</span></span>
+        <span class="gt-item"><span class="gt-icon">🔷</span><span class="gt-text">Coupa</span></span>
+        <span class="gt-item"><span class="gt-icon">🎯</span><span class="gt-text">Carta</span></span>
+        <span class="gt-item"><span class="gt-icon">🏦</span><span class="gt-text">Mercury</span></span>
+        <span class="gt-item"><span class="gt-icon">🌿</span><span class="gt-text">Watershed</span></span>
+        <span class="gt-item"><span class="gt-icon">🔬</span><span class="gt-text">Benchling</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ 5 — FADE ROTATOR ═══ -->
+<div class="sg" id="s5">
+  <div class="sh">
+    <div class="sbadge">Style 5</div>
+    <h2>Fade-Through Rotator</h2>
+    <p>One company name at a time fades in and out in the center. Minimal, elegant, focused.</p>
+    <div class="sdiv"></div>
+  </div>
+  <div class="sw">
+    <div class="rotator-wrap">
+      <div class="rot-prefix">Trusted by teams at</div>
+      <div class="rot-stage" id="rot-stage">
+        <div class="rot-word active" id="rw0">Airbnb</div>
+        <div class="rot-word" id="rw1">Stripe</div>
+        <div class="rot-word" id="rw2">Shopify</div>
+        <div class="rot-word" id="rw3">Brex</div>
+        <div class="rot-word" id="rw4">Mercury</div>
+        <div class="rot-word" id="rw5">Rippling</div>
+      </div>
+      <div class="rot-dots" id="rot-dots">
+        <div class="rot-dot active"></div>
+        <div class="rot-dot"></div>
+        <div class="rot-dot"></div>
+        <div class="rot-dot"></div>
+        <div class="rot-dot"></div>
+        <div class="rot-dot"></div>
+      </div>
+      <div class="rot-companies" id="rot-companies">
+        <span class="rot-tag highlight">Airbnb</span>
+        <span class="rot-tag">Stripe</span>
+        <span class="rot-tag">Shopify</span>
+        <span class="rot-tag">Brex</span>
+        <span class="rot-tag">Mercury</span>
+        <span class="rot-tag">Rippling</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ 6 — COUNTER STRIP ═══ -->
+<div class="sg" id="s6">
+  <div class="sh">
+    <div class="sbadge">Style 6</div>
+    <h2>Scroll-Triggered Counter Strip</h2>
+    <p>Numbers count up when scrolled into view. Hover reveals a gradient underline. No movement — pure impact.</p>
+    <div class="sdiv"></div>
+  </div>
+  <div class="sw">
+    <div class="counter-strip" id="cstrip">
+      <div class="cs-item">
+        <div class="cs-num" data-target="500" data-suffix="+">0</div>
+        <div class="cs-label">Finance Teams</div>
+        <div class="cs-sub">actively using Meeru AI</div>
+      </div>
+      <div class="cs-item">
+        <div class="cs-num" data-target="4" data-suffix="B+" data-prefix="$">0</div>
+        <div class="cs-label">Reconciled</div>
+        <div class="cs-sub">in transactions automated</div>
+      </div>
+      <div class="cs-item">
+        <div class="cs-num" data-target="99" data-suffix="%">0</div>
+        <div class="cs-label">Accuracy Rate</div>
+        <div class="cs-sub">across all reconciliations</div>
+      </div>
+      <div class="cs-item">
+        <div class="cs-num" data-target="40" data-suffix="+">0</div>
+        <div class="cs-label">Integrations</div>
+        <div class="cs-sub">ERPs, banks & finance apps</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PICK -->
+<div style="text-align:center;padding:3rem 2rem 5rem;background:#fff;margin:0 2.5rem 4rem;border-radius:20px;border:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,0.05)">
+  <h2 style="font-size:1.6rem;font-weight:900;color:var(--dark);letter-spacing:-0.8px;margin-bottom:0.5rem">Which one? 👆</h2>
+  <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem">Tell me the number and I'll swap it into your main site.</p>
+  <div style="display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap">
+    <button onclick="alert('Tell Claude: Style 1 — Logo Grid')" style="padding:0.6rem 1.2rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;cursor:pointer;color:var(--dark);transition:all 0.2s" onmouseover="this.style.background='#013060';this.style.color='#fff';this.style.borderColor='#013060'" onmouseout="this.style.background='#fff';this.style.color='var(--dark)';this.style.borderColor='var(--border)'">1 — Logo Grid</button>
+    <button onclick="alert('Tell Claude: Style 2 — Scroll Cards')" style="padding:0.6rem 1.2rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;cursor:pointer;color:var(--dark);transition:all 0.2s" onmouseover="this.style.background='#013060';this.style.color='#fff';this.style.borderColor='#013060'" onmouseout="this.style.background='#fff';this.style.color='var(--dark)';this.style.borderColor='var(--border)'">2 — Scroll Cards</button>
+    <button onclick="alert('Tell Claude: Style 3 — Dual Row')" style="padding:0.6rem 1.2rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;cursor:pointer;color:var(--dark);transition:all 0.2s" onmouseover="this.style.background='#013060';this.style.color='#fff';this.style.borderColor='#013060'" onmouseout="this.style.background='#fff';this.style.color='var(--dark)';this.style.borderColor='var(--border)'">3 — Dual Row</button>
+    <button onclick="alert('Tell Claude: Style 4 — Glow Hover')" style="padding:0.6rem 1.2rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;cursor:pointer;color:var(--dark);transition:all 0.2s" onmouseover="this.style.background='#013060';this.style.color='#fff';this.style.borderColor='#013060'" onmouseout="this.style.background='#fff';this.style.color='var(--dark)';this.style.borderColor='var(--border)'">4 — Glow Hover</button>
+    <button onclick="alert('Tell Claude: Style 5 — Fade Rotator')" style="padding:0.6rem 1.2rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;cursor:pointer;color:var(--dark);transition:all 0.2s" onmouseover="this.style.background='#013060';this.style.color='#fff';this.style.borderColor='#013060'" onmouseout="this.style.background='#fff';this.style.color='var(--dark)';this.style.borderColor='var(--border)'">5 — Fade Rotator</button>
+    <button onclick="alert('Tell Claude: Style 6 — Counter Strip')" style="padding:0.6rem 1.2rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;cursor:pointer;color:var(--dark);transition:all 0.2s" onmouseover="this.style.background='#013060';this.style.color='#fff';this.style.borderColor='#013060'" onmouseout="this.style.background='#fff';this.style.color='var(--dark)';this.style.borderColor='var(--border)'">6 — Counter Strip</button>
+  </div>
+</div>
+
+<script>
+// NAV ACTIVE
+const ids=['s1','s2','s3','s4','s5','s6'];
+const pills=document.querySelectorAll('.np');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=80)cur=id;});
+  pills.forEach(p=>p.classList.toggle('active',p.getAttribute('href')==='#'+cur));
+},{passive:true});
+
+// LOGO GRID FADE IN
+const lgObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.lg-item').forEach((el,i)=>{
+        setTimeout(()=>el.classList.add('on'),i*80);
+      });
+      lgObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.2});
+const lg=document.getElementById('lgrid');
+if(lg)lgObs.observe(lg);
+
+// FADE ROTATOR
+(function(){
+  const words=document.querySelectorAll('.rot-word');
+  const dots=document.querySelectorAll('.rot-dot');
+  const tags=document.querySelectorAll('.rot-tag');
+  let cur=0;
+  setInterval(()=>{
+    words[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    tags[cur].classList.remove('highlight');
+    cur=(cur+1)%words.length;
+    words[cur].classList.add('active');
+    dots[cur].classList.add('active');
+    tags[cur].classList.add('highlight');
+  },1800);
+})();
+
+// COUNTER STRIP
+function countUp(el){
+  const target=+el.dataset.target;
+  const suffix=el.dataset.suffix||'';
+  const prefix=el.dataset.prefix||'';
+  const dur=1600;let s=null;
+  const step=ts=>{
+    if(!s)s=ts;
+    const p=Math.min((ts-s)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=prefix+Math.round(ease*target)+suffix;
+    if(p<1)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('[data-target]').forEach(countUp);
+      cObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.4});
+const cs=document.getElementById('cstrip');
+if(cs)cObs.observe(cs);
+</script>
+<script>
+(function(){
+  var items=document.querySelectorAll(".nav-links>li");
+  items.forEach(function(li){
+    var menu=li.querySelector(".drop-menu");
+    if(!menu)return;
+    var t;
+    function show(){clearTimeout(t);menu.classList.add("drop-open");}
+    function hide(){t=setTimeout(function(){menu.classList.remove("drop-open");},180);}
+    li.addEventListener("mouseenter",show);
+    li.addEventListener("mouseleave",hide);
+    menu.addEventListener("mouseenter",show);
+    menu.addEventListener("mouseleave",hide);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Scroll Style Preview — Pick Your Favourite</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#013060;--blue:#1a5a9a;--cyan:#E97131;
+  --dark:#0d0e1c;--text:#1a1b2e;--muted:#6b7280;
+  --border:#e5e7f0;--bg:#ffffff;--bg2:#f7f8ff;
+  --grad:linear-gradient(135deg,#013060,#1a5a9a,#E97131);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#f0f1fa;color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* ── TOP NAV ── */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0.8rem 3rem;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap
+}
+.top-nav h1{font-size:0.95rem;font-weight:800;color:var(--dark);margin-right:1rem}
+.top-nav h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-pill{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  background:var(--bg2);border:1px solid var(--border);
+  padding:0.35rem 0.9rem;border-radius:100px;
+  font-size:0.75rem;font-weight:600;color:var(--muted);
+  text-decoration:none;transition:all 0.25s;white-space:nowrap
+}
+.nav-pill:hover,.nav-pill.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.nav-pill .num{
+  width:18px;height:18px;border-radius:50%;
+  background:var(--purple);color:#fff;
+  font-size:0.65rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center
+}
+.nav-pill:hover .num,.nav-pill.active .num{background:rgba(255,255,255,0.3)}
+
+/* ── SECTION LABELS ── */
+.style-header{
+  padding:2rem 3rem 0;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem
+}
+.style-badge{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:var(--purple);color:#fff;
+  font-size:0.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:0.4rem 1rem;border-radius:100px
+}
+.style-header h2{font-size:2rem;font-weight:900;color:var(--dark);letter-spacing:-1px}
+.style-header p{font-size:0.88rem;color:var(--muted);max-width:420px}
+.style-divider{
+  height:4px;background:var(--grad);border-radius:2px;width:60px;margin:0 auto
+}
+.section-wrap{
+  background:var(--bg);border-radius:24px;
+  margin:2rem 3rem 4rem;
+  box-shadow:0 4px 40px rgba(0,0,0,0.07);
+  overflow:hidden;border:1px solid var(--border)
+}
+
+/* ── SHARED ── */
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.s-label{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:0.8rem}
+.s-label::before{content:'';width:16px;height:2px;background:var(--grad);border-radius:2px}
+.s-title{font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:900;letter-spacing:-1.2px;line-height:1.1;margin-bottom:0.8rem;color:var(--dark)}
+.s-sub{font-size:0.92rem;color:var(--muted);line-height:1.8;max-width:500px}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)}
+.reveal.on{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-40px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)}
+.reveal-l.on{opacity:1;transform:none}
+.reveal-r{opacity:0;transform:translateX(40px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)}
+.reveal-r.on{opacity:1;transform:none}
+
+
+/* ════════════════════════════════════════
+   STYLE 1 — HORIZONTAL SCROLL
+════════════════════════════════════════ */
+#style1{}
+.hscroll-outer{height:450vh;position:relative}
+.hscroll-sticky{
+  position:sticky;top:0;height:100vh;
+  overflow:hidden;display:flex;flex-direction:column;justify-content:center;
+  padding:3rem 4%;background:var(--bg)
+}
+.hscroll-header{text-align:center;margin-bottom:2.5rem}
+.hscroll-track{
+  display:flex;gap:1.5rem;
+  will-change:transform;transition:transform 0.05s linear
+}
+.hscroll-card{
+  min-width:320px;flex-shrink:0;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;padding:2rem;
+  transition:transform 0.4s,box-shadow 0.4s,border-color 0.4s,opacity 0.4s
+}
+.hscroll-card.active{
+  background:#fff;border-color:rgba(1,48,96,0.25);
+  box-shadow:0 20px 50px rgba(1,48,96,0.12);
+  transform:translateY(-8px) scale(1.02)
+}
+.hscroll-card.inactive{opacity:0.45;transform:scale(0.96)}
+.hc-step{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.hc-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(1,48,96,0.1),rgba(1,48,96,0.08));border:1px solid rgba(1,48,96,0.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem;transition:background 0.3s}
+.hscroll-card.active .hc-icon{background:var(--grad)}
+.hscroll-card h3{font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:0.5rem}
+.hscroll-card p{font-size:0.84rem;color:var(--muted);line-height:1.7}
+.hscroll-dots{display:flex;gap:0.5rem;justify-content:center;margin-top:2rem}
+.hdot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.3s}
+.hdot.active{background:var(--purple);width:24px;border-radius:4px}
+/* progress bar inside */
+.hscroll-prog{height:3px;background:var(--border);border-radius:2px;margin-top:1.5rem;overflow:hidden}
+.hscroll-prog-fill{height:100%;background:var(--grad);border-radius:2px;transition:width 0.05s linear;width:0%}
+
+
+/* ════════════════════════════════════════
+   STYLE 2 — MORPHING SINGLE CARD
+════════════════════════════════════════ */
+#style2{background:var(--bg)}
+.morph-outer{height:500vh;position:relative}
+.morph-sticky{
+  position:sticky;top:0;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:3rem 4%;gap:5rem;background:var(--bg)
+}
+/* left counter list */
+.morph-steps{display:flex;flex-direction:column;gap:1rem}
+.morph-step{
+  display:flex;align-items:center;gap:0.9rem;
+  opacity:0.25;transition:opacity 0.5s,transform 0.5s;
+  cursor:pointer
+}
+.morph-step.active{opacity:1;transform:translateX(6px)}
+.ms-num{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--bg2);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:800;color:var(--muted);
+  transition:all 0.4s;flex-shrink:0
+}
+.morph-step.active .ms-num{
+  background:var(--grad);border-color:transparent;
+  color:#fff;box-shadow:0 4px 15px rgba(1,48,96,0.3)
+}
+.ms-label{font-size:0.9rem;font-weight:700;color:var(--muted);white-space:nowrap;transition:color 0.4s}
+.morph-step.active .ms-label{color:var(--dark)}
+/* main card */
+.morph-card{
+  width:420px;min-height:440px;flex-shrink:0;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:28px;padding:2.5rem;
+  box-shadow:0 20px 60px rgba(0,0,0,0.08);
+  position:relative;overflow:hidden
+}
+.morph-card::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:240px;height:240px;
+  background:radial-gradient(circle,rgba(1,48,96,0.07),transparent 70%);
+  border-radius:50%;pointer-events:none
+}
+.morph-panel{
+  position:absolute;inset:2.5rem;
+  opacity:0;transform:scale(0.96) translateY(16px);
+  transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1)
+}
+.morph-panel.active{opacity:1;transform:none}
+.mp-icon{font-size:3rem;margin-bottom:1.2rem;display:block;filter:drop-shadow(0 4px 12px rgba(1,48,96,0.2))}
+.morph-panel h3{font-size:1.4rem;font-weight:900;letter-spacing:-0.5px;color:var(--dark);margin-bottom:0.8rem}
+.morph-panel p{font-size:0.9rem;color:var(--muted);line-height:1.8}
+.mp-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.2rem}
+.mp-tag{background:rgba(1,48,96,0.07);border:1px solid rgba(1,48,96,0.15);color:var(--purple);font-size:0.72rem;font-weight:600;padding:0.25rem 0.7rem;border-radius:100px}
+/* card outline glow */
+.morph-card{transition:box-shadow 0.5s,border-color 0.5s}
+.morph-card.glowing{border-color:rgba(1,48,96,0.2);box-shadow:0 20px 60px rgba(1,48,96,0.12)}
+
+
+/* ════════════════════════════════════════
+   STYLE 3 — ALTERNATING SPLIT PANELS
+════════════════════════════════════════ */
+#style3{background:var(--bg2)}
+.alt-item{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:0;position:relative;overflow:hidden
+}
+.alt-item:nth-child(even) .alt-text{order:2}
+.alt-item:nth-child(even) .alt-visual{order:1}
+.alt-text{padding:5rem 4rem;background:var(--bg)}
+.alt-text .step-tag{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:rgba(1,48,96,0.07);color:var(--purple);
+  padding:0.35rem 0.9rem;border-radius:100px;margin-bottom:1.5rem;
+  border:1px solid rgba(1,48,96,0.15)
+}
+.alt-text h3{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;letter-spacing:-1px;color:var(--dark);margin-bottom:1rem;line-height:1.15}
+.alt-text p{font-size:0.92rem;color:var(--muted);line-height:1.85;margin-bottom:1.5rem}
+.alt-stat{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:0.8rem 1.2rem
+}
+.alt-stat .v{font-size:1.6rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.alt-stat .l{font-size:0.78rem;color:var(--muted);line-height:1.3}
+.alt-visual{
+  height:100%;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:4rem 3rem;
+  position:relative
+}
+.alt-visual.v1{background:linear-gradient(135deg,rgba(1,48,96,0.06),rgba(1,48,96,0.04))}
+.alt-visual.v2{background:linear-gradient(135deg,rgba(233,113,49,0.06),rgba(1,48,96,0.04))}
+.alt-visual.v3{background:linear-gradient(135deg,rgba(1,48,96,0.06),rgba(236,72,153,0.04))}
+.alt-visual.v4{background:linear-gradient(135deg,rgba(16,185,129,0.06),rgba(1,48,96,0.04))}
+.alt-mock{
+  background:#fff;border:1px solid var(--border);
+  border-radius:20px;padding:1.5rem;
+  box-shadow:0 12px 40px rgba(0,0,0,0.08);
+  width:100%;max-width:340px;
+  transition:transform 0.4s,box-shadow 0.4s
+}
+.alt-mock:hover{transform:translateY(-8px) rotate(1deg);box-shadow:0 24px 60px rgba(1,48,96,0.12)}
+.mock-bar{height:6px;border-radius:3px;background:var(--grad);margin-bottom:1.2rem}
+.mock-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem}
+.mock-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.mock-dot.g{background:#22c55e}.mock-dot.p{background:var(--purple)}.mock-dot.b{background:var(--blue)}
+.mock-line{height:8px;background:var(--bg2);border-radius:4px;flex:1}
+.mock-line.short{flex:0.5}
+.mock-num{font-size:1.4rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mock-sub{font-size:0.7rem;color:var(--muted)}
+.mock-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.8rem}
+.mock-cell{background:var(--bg2);border-radius:8px;padding:0.6rem;text-align:center}
+.mock-cell .v{font-size:1rem;font-weight:800;color:var(--dark)}
+.mock-cell .l{font-size:0.62rem;color:var(--muted)}
+/* divider lines between panels */
+.alt-item + .alt-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(1,48,96,0.2),transparent)}
+
+
+/* ════════════════════════════════════════
+   STYLE 4 — TIMELINE
+════════════════════════════════════════ */
+#style4{background:var(--bg);padding:5rem 4%}
+.timeline-header{text-align:center;margin-bottom:4rem}
+.timeline-wrap{position:relative;max-width:900px;margin:0 auto}
+/* center line */
+.tl-line{
+  position:absolute;left:50%;top:0;bottom:0;
+  width:2px;background:var(--border);transform:translateX(-50%)
+}
+.tl-line-fill{
+  width:100%;background:var(--grad);height:0%;
+  transition:height 0.1s linear;border-radius:2px
+}
+.tl-item{
+  display:grid;grid-template-columns:1fr 60px 1fr;
+  gap:0;align-items:center;margin-bottom:4rem;
+  position:relative
+}
+.tl-item:last-child{margin-bottom:0}
+.tl-left{padding-right:2.5rem;text-align:right}
+.tl-right{padding-left:2.5rem;text-align:left}
+.tl-empty{} /* placeholder for alternating */
+.tl-node{
+  width:52px;height:52px;border-radius:50%;
+  background:#fff;border:2.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;z-index:2;position:relative;
+  transition:border-color 0.5s,box-shadow 0.5s,transform 0.5s;
+  margin:0 auto
+}
+.tl-item.active .tl-node{
+  border-color:var(--purple);
+  box-shadow:0 0 0 6px rgba(1,48,96,0.1),0 8px 20px rgba(1,48,96,0.2);
+  transform:scale(1.12)
+}
+.tl-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:16px;padding:1.5rem;
+  opacity:0;transition:opacity 0.6s,transform 0.6s,border-color 0.4s,box-shadow 0.4s
+}
+.tl-left .tl-card{transform:translateX(30px)}
+.tl-right .tl-card{transform:translateX(-30px)}
+.tl-item.active .tl-card{
+  opacity:1;transform:translateX(0);
+  border-color:rgba(1,48,96,0.18);
+  box-shadow:0 8px 30px rgba(1,48,96,0.08)
+}
+.tl-card .step-lbl{font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
+.tl-card h4{font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.4rem}
+.tl-card p{font-size:0.82rem;color:var(--muted);line-height:1.65}
+.tl-card .tl-pill{
+  display:inline-block;margin-top:0.8rem;
+  background:rgba(1,48,96,0.07);color:var(--purple);
+  font-size:0.72rem;font-weight:600;
+  padding:0.25rem 0.7rem;border-radius:100px;
+  border:1px solid rgba(1,48,96,0.15)
+}
+
+
+/* ════════════════════════════════════════
+   STYLE 5 — BENTO GRID REVEAL
+════════════════════════════════════════ */
+#style5{background:var(--bg2);padding:5rem 4%}
+.bento-header{text-align:center;margin-bottom:3.5rem}
+.bento-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:auto auto;
+  gap:1rem;max-width:1000px;margin:0 auto
+}
+.b-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:20px;padding:1.8rem;
+  opacity:0;transform:translateY(30px) scale(0.95);
+  transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+             transform 0.6s cubic-bezier(0.16,1,0.3,1),
+             border-color 0.35s,box-shadow 0.35s;
+  cursor:default;overflow:hidden;position:relative
+}
+.b-card.on{opacity:1;transform:none}
+.b-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(1,48,96,0.2);box-shadow:0 16px 40px rgba(1,48,96,0.09)}
+/* spanning */
+.b-wide{grid-column:span 2}
+.b-tall{grid-row:span 2}
+/* accent line */
+.b-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.b-card:hover::before{transform:scaleX(1)}
+.b-icon{font-size:1.8rem;margin-bottom:1rem;display:block;filter:drop-shadow(0 2px 8px rgba(1,48,96,0.15))}
+.b-card h3{font-size:0.95rem;font-weight:800;color:var(--dark);margin-bottom:0.5rem}
+.b-card p{font-size:0.8rem;color:var(--muted);line-height:1.65}
+.b-stat{font-size:2rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;line-height:1;margin-bottom:0.3rem}
+.b-stat-lbl{font-size:0.72rem;color:var(--muted);font-weight:500}
+/* bg accent on big cards */
+.b-card.accent{background:linear-gradient(135deg,rgba(1,48,96,0.04),rgba(1,48,96,0.03))}
+.b-bar{height:4px;background:var(--border);border-radius:2px;margin-top:1rem;overflow:hidden}
+.b-bar-fill{height:100%;background:var(--grad);border-radius:2px}
+
+
+/* ════════════════════════════════════════
+   PICK BUTTON
+════════════════════════════════════════ */
+.pick-section{
+  text-align:center;padding:4rem 3rem;
+  background:#fff;margin:0 3rem 4rem;
+  border-radius:24px;border:1px solid var(--border);
+  box-shadow:0 4px 40px rgba(0,0,0,0.05)
+}
+.pick-section h2{font-size:1.8rem;font-weight:900;color:var(--dark);letter-spacing:-1px;margin-bottom:0.5rem}
+.pick-section p{color:var(--muted);font-size:0.9rem;margin-bottom:2rem}
+.pick-btns{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap}
+.pick-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.7rem 1.4rem;border-radius:10px;font-weight:700;
+  font-size:0.85rem;cursor:pointer;border:1.5px solid var(--border);
+  background:#fff;color:var(--dark);font-family:inherit;
+  transition:all 0.25s
+}
+.pick-btn:hover{background:var(--purple);color:#fff;border-color:var(--purple);transform:translateY(-2px);box-shadow:0 6px 20px rgba(1,48,96,0.25)}
+
+/* padding at top for nav */
+body{padding-top:60px}
+.section-group{margin-top:2rem}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <h1>Meeru<span>AI</span> — Pick a scroll style</h1>
+  <a href="#style1" class="nav-pill"><span class="num">1</span> Horizontal Scroll</a>
+  <a href="#style2" class="nav-pill"><span class="num">2</span> Morphing Card</a>
+  <a href="#style3" class="nav-pill"><span class="num">3</span> Split Panels</a>
+  <a href="#style4" class="nav-pill"><span class="num">4</span> Timeline</a>
+  <a href="#style5" class="nav-pill"><span class="num">5</span> Bento Grid</a>
+</div>
+
+
+<!-- ══════════════════════════════════
+     STYLE 1 — HORIZONTAL SCROLL
+══════════════════════════════════ -->
+<div class="section-group" id="style1">
+  <div class="style-header reveal">
+    <div class="style-badge">Style 1</div>
+    <h2>Horizontal Scroll</h2>
+    <p>Cards slide in from the right one by one as you scroll down. Active card is highlighted and elevated.</p>
+    <div class="style-divider"></div>
+  </div>
+  <div class="section-wrap">
+    <div class="hscroll-outer">
+      <div class="hscroll-sticky">
+        <div class="hscroll-header reveal">
+          <div class="s-label">How It Works</div>
+          <h2 class="s-title">Finance AI that <span class="grad-text">actually works</span></h2>
+        </div>
+        <div class="hscroll-track" id="htrack">
+          <div class="hscroll-card active" data-hcard="0">
+            <div class="hc-step">Step 01</div>
+            <div class="hc-icon">🔗</div>
+            <h3>Connect Your Data</h3>
+            <p>Sync every ERP, bank feed, and data source in minutes with zero-config connectors. 40+ integrations ready on day one.</p>
+          </div>
+          <div class="hscroll-card" data-hcard="1">
+            <div class="hc-step">Step 02</div>
+            <div class="hc-icon">⚡</div>
+            <h3>AI Closes Your Books</h3>
+            <p>Automated reconciliations run overnight — no manual entry, no errors. Close in days, not weeks.</p>
+          </div>
+          <div class="hscroll-card" data-hcard="2">
+            <div class="hc-step">Step 03</div>
+            <div class="hc-icon">🧠</div>
+            <h3>Surface Insights Instantly</h3>
+            <p>Ask questions in plain English. Get live answers, trends, and forecasts on demand — no SQL needed.</p>
+          </div>
+          <div class="hscroll-card" data-hcard="3">
+            <div class="hc-step">Step 04</div>
+            <div class="hc-icon">🛡️</div>
+            <h3>Stay Audit-Ready</h3>
+            <p>Every action logged, every variance explained, always compliant — automatically and in real time.</p>
+          </div>
+        </div>
+        <div class="hscroll-dots" id="hdots">
+          <div class="hdot active"></div>
+          <div class="hdot"></div>
+          <div class="hdot"></div>
+          <div class="hdot"></div>
+        </div>
+        <div class="hscroll-prog"><div class="hscroll-prog-fill" id="hpfill"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     STYLE 2 — MORPHING CARD
+══════════════════════════════════ -->
+<div class="section-group" id="style2">
+  <div class="style-header reveal">
+    <div class="style-badge">Style 2</div>
+    <h2>Morphing Single Card</h2>
+    <p>One elegant card in the center transforms its content as you scroll. Left side shows progress steps.</p>
+    <div class="style-divider"></div>
+  </div>
+  <div class="section-wrap">
+    <div class="morph-outer">
+      <div class="morph-sticky">
+        <div class="morph-steps">
+          <div class="morph-step active" data-ms="0"><div class="ms-num">01</div><div class="ms-label">Connect</div></div>
+          <div class="morph-step" data-ms="1"><div class="ms-num">02</div><div class="ms-label">Close</div></div>
+          <div class="morph-step" data-ms="2"><div class="ms-num">03</div><div class="ms-label">Insights</div></div>
+          <div class="morph-step" data-ms="3"><div class="ms-num">04</div><div class="ms-label">Audit</div></div>
+        </div>
+        <div class="morph-card glowing" id="morph-card">
+          <div class="morph-panel active" data-mp="0">
+            <span class="mp-icon">🔗</span>
+            <h3>Connect Your Data</h3>
+            <p>Sync every ERP, bank feed, and data source in minutes with zero-config connectors. 40+ integrations ready on day one.</p>
+            <div class="mp-tags"><span class="mp-tag">NetSuite</span><span class="mp-tag">SAP</span><span class="mp-tag">QuickBooks</span><span class="mp-tag">+40 more</span></div>
+          </div>
+          <div class="morph-panel" data-mp="1">
+            <span class="mp-icon">⚡</span>
+            <h3>AI Closes Your Books</h3>
+            <p>Automated reconciliations run overnight — no manual entry, no errors. Close in days, not weeks, with full confidence.</p>
+            <div class="mp-tags"><span class="mp-tag">Auto-reconcile</span><span class="mp-tag">Overnight close</span><span class="mp-tag">Zero errors</span></div>
+          </div>
+          <div class="morph-panel" data-mp="2">
+            <span class="mp-icon">🧠</span>
+            <h3>Surface Insights Instantly</h3>
+            <p>Ask questions in plain English. Get live answers, trends, variances, and forecasts on demand — no SQL needed.</p>
+            <div class="mp-tags"><span class="mp-tag">Natural language</span><span class="mp-tag">Live forecasts</span><span class="mp-tag">Predictive AI</span></div>
+          </div>
+          <div class="morph-panel" data-mp="3">
+            <span class="mp-icon">🛡️</span>
+            <h3>Stay Audit-Ready</h3>
+            <p>Every action logged, every variance explained, always compliant — automatically and continuously, with zero extra work.</p>
+            <div class="mp-tags"><span class="mp-tag">Full audit trail</span><span class="mp-tag">SOC 2</span><span class="mp-tag">Role-based access</span></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1.2rem">
+          <div class="s-label">How It Works</div>
+          <h2 class="s-title" style="font-size:1.8rem;max-width:200px">Finance AI that <span class="grad-text">works</span></h2>
+          <p style="font-size:0.82rem;color:var(--muted);max-width:180px;line-height:1.7">Scroll to explore each step of the Meeru AI process.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     STYLE 3 — ALTERNATING SPLIT PANELS
+══════════════════════════════════ -->
+<div class="section-group" id="style3">
+  <div class="style-header reveal">
+    <div class="style-badge">Style 3</div>
+    <h2>Alternating Split Panels</h2>
+    <p>Each step is a full-height panel. Text and visual alternate left/right and slide in from opposite sides.</p>
+    <div class="style-divider"></div>
+  </div>
+  <div class="section-wrap">
+    <!-- item 1 -->
+    <div class="alt-item">
+      <div class="alt-text reveal-l">
+        <div class="step-tag">Step 01</div>
+        <h3>Connect Your <span class="grad-text">Data</span></h3>
+        <p>Sync every ERP, bank feed, and data source in minutes with zero-config connectors. 40+ integrations ready on day one — no engineering required.</p>
+        <div class="alt-stat"><div class="v">40+</div><div class="l">Integrations<br/>pre-built</div></div>
+      </div>
+      <div class="alt-visual v1 reveal-r">
+        <div class="alt-mock">
+          <div class="mock-bar"></div>
+          <div class="mock-row"><div class="mock-dot g"></div><div class="mock-line"></div><span style="font-size:0.75rem;font-weight:600;color:#16a34a">Connected</span></div>
+          <div class="mock-row"><div class="mock-dot g"></div><div class="mock-line"></div><span style="font-size:0.75rem;font-weight:600;color:#16a34a">Connected</span></div>
+          <div class="mock-row"><div class="mock-dot p"></div><div class="mock-line short"></div><span style="font-size:0.75rem;font-weight:600;color:var(--purple)">Syncing…</span></div>
+          <div style="margin-top:1rem;font-size:0.72rem;color:var(--muted)">6 of 6 sources active</div>
+        </div>
+      </div>
+    </div>
+    <!-- item 2 -->
+    <div class="alt-item">
+      <div class="alt-visual v2 reveal-l">
+        <div class="alt-mock">
+          <div class="mock-bar"></div>
+          <div style="margin-bottom:0.8rem">
+            <div class="mock-num">47</div>
+            <div class="mock-sub">items auto-reconciled</div>
+          </div>
+          <div class="mock-grid">
+            <div class="mock-cell"><div class="v">✓ 45</div><div class="l">Auto</div></div>
+            <div class="mock-cell"><div class="v" style="color:var(--purple)">AI 2</div><div class="l">Flagged</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="alt-text reveal-r">
+        <div class="step-tag">Step 02</div>
+        <h3>AI Closes Your <span class="grad-text">Books</span></h3>
+        <p>Automated reconciliations run overnight. No manual entry, no errors — Meeru handles variance explanations so your team wakes up to a clean close.</p>
+        <div class="alt-stat"><div class="v">3 days</div><div class="l">Average<br/>time saved</div></div>
+      </div>
+    </div>
+    <!-- item 3 -->
+    <div class="alt-item">
+      <div class="alt-text reveal-l">
+        <div class="step-tag">Step 03</div>
+        <h3>Surface Insights <span class="grad-text">Instantly</span></h3>
+        <p>Ask questions in plain English. Get live answers, trends, variances, and forecasts on demand. No SQL, no waiting, no analyst bottleneck.</p>
+        <div class="alt-stat"><div class="v">&lt;2s</div><div class="l">Answer<br/>latency</div></div>
+      </div>
+      <div class="alt-visual v3 reveal-r">
+        <div class="alt-mock">
+          <div class="mock-bar"></div>
+          <div style="background:rgba(1,48,96,0.06);border:1px solid rgba(1,48,96,0.15);border-radius:10px;padding:0.7rem;margin-bottom:0.8rem;font-size:0.78rem;color:var(--muted)">"Why did margin drop 3%?"</div>
+          <div style="background:rgba(1,48,96,0.04);border:1px solid rgba(1,48,96,0.1);border-radius:10px;padding:0.7rem;font-size:0.75rem;color:var(--text);line-height:1.5">Cloud costs +22% YoY and a one-time vendor fee of $120K in October.</div>
+        </div>
+      </div>
+    </div>
+    <!-- item 4 -->
+    <div class="alt-item">
+      <div class="alt-visual v4 reveal-l">
+        <div class="alt-mock">
+          <div class="mock-bar"></div>
+          <div style="display:flex;flex-direction:column;gap:0.6rem">
+            <div class="mock-row"><div class="mock-dot g"></div><div style="font-size:0.75rem;color:var(--text)">Close completed <span style="background:rgba(34,197,94,0.1);color:#16a34a;font-size:0.65rem;padding:0.1rem 0.4rem;border-radius:4px;font-weight:700">Auto</span></div></div>
+            <div class="mock-row"><div class="mock-dot p"></div><div style="font-size:0.75rem;color:var(--text)">Variance explained by AI</div></div>
+            <div class="mock-row"><div class="mock-dot g"></div><div style="font-size:0.75rem;color:var(--text)">47 items approved</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="alt-text reveal-r">
+        <div class="step-tag">Step 04</div>
+        <h3>Stay <span class="grad-text">Audit-Ready</span></h3>
+        <p>Every action logged, every variance explained, always compliant. Audit prep drops from weeks to hours — automatically.</p>
+        <div class="alt-stat"><div class="v">−95%</div><div class="l">Audit prep<br/>time saved</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     STYLE 4 — TIMELINE
+══════════════════════════════════ -->
+<div class="section-group" id="style4">
+  <div class="style-header reveal">
+    <div class="style-badge">Style 4</div>
+    <h2>Animated Timeline</h2>
+    <p>A vertical line draws itself down the center as you scroll, activating each milestone card left and right.</p>
+    <div class="style-divider"></div>
+  </div>
+  <div class="section-wrap" style="background:var(--bg)">
+    <div id="style4-inner" style="padding:4rem 3rem">
+      <div class="timeline-header reveal">
+        <div class="s-label">How It Works</div>
+        <h2 class="s-title">From raw data to <span class="grad-text">strategic clarity</span></h2>
+      </div>
+      <div class="timeline-wrap">
+        <div class="tl-line"><div class="tl-line-fill" id="tl-fill"></div></div>
+        <!-- item 1 -->
+        <div class="tl-item" data-tl="0">
+          <div class="tl-left">
+            <div class="tl-card">
+              <div class="step-lbl">Step 01</div>
+              <h4>Connect Your Data</h4>
+              <p>Sync every ERP, bank feed, and data source in minutes with zero-config connectors.</p>
+              <div class="tl-pill">40+ integrations</div>
+            </div>
+          </div>
+          <div><div class="tl-node">🔗</div></div>
+          <div class="tl-right tl-empty"></div>
+        </div>
+        <!-- item 2 -->
+        <div class="tl-item" data-tl="1">
+          <div class="tl-left tl-empty"></div>
+          <div><div class="tl-node">⚡</div></div>
+          <div class="tl-right">
+            <div class="tl-card">
+              <div class="step-lbl">Step 02</div>
+              <h4>AI Closes Your Books</h4>
+              <p>Automated reconciliations run overnight — no manual entry, no errors, full confidence.</p>
+              <div class="tl-pill">Close in days, not weeks</div>
+            </div>
+          </div>
+        </div>
+        <!-- item 3 -->
+        <div class="tl-item" data-tl="2">
+          <div class="tl-left">
+            <div class="tl-card">
+              <div class="step-lbl">Step 03</div>
+              <h4>Surface Insights Instantly</h4>
+              <p>Ask questions in plain English. Get live answers, trends, and forecasts on demand.</p>
+              <div class="tl-pill">Natural language queries</div>
+            </div>
+          </div>
+          <div><div class="tl-node">🧠</div></div>
+          <div class="tl-right tl-empty"></div>
+        </div>
+        <!-- item 4 -->
+        <div class="tl-item" data-tl="3">
+          <div class="tl-left tl-empty"></div>
+          <div><div class="tl-node">🛡️</div></div>
+          <div class="tl-right">
+            <div class="tl-card">
+              <div class="step-lbl">Step 04</div>
+              <h4>Stay Audit-Ready</h4>
+              <p>Every action logged, every variance explained, always compliant — automatically.</p>
+              <div class="tl-pill">−95% audit prep time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     STYLE 5 — BENTO GRID
+══════════════════════════════════ -->
+<div class="section-group" id="style5">
+  <div class="style-header reveal">
+    <div class="style-badge">Style 5</div>
+    <h2>Bento Grid Reveal</h2>
+    <p>Cards flip and pop into place one by one with staggered delays as you scroll into the section.</p>
+    <div class="style-divider"></div>
+  </div>
+  <div class="section-wrap" style="background:var(--bg2)">
+    <div style="padding:4rem 3%">
+      <div class="bento-header reveal">
+        <div class="s-label">How It Works</div>
+        <h2 class="s-title">Everything your finance team <span class="grad-text">needs</span></h2>
+      </div>
+      <div class="bento-grid">
+        <!-- row 1 -->
+        <div class="b-card b-wide accent" style="transition-delay:0s">
+          <span class="b-icon">🔗</span>
+          <h3>Connect Your Data</h3>
+          <p>Sync every ERP, bank feed, and data source in minutes. 40+ integrations, zero config required.</p>
+          <div class="b-bar"><div class="b-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="b-card" style="transition-delay:0.1s">
+          <div class="b-stat">40+</div>
+          <div class="b-stat-lbl">Integrations</div>
+          <p style="margin-top:0.6rem;font-size:0.78rem;color:var(--muted)">ERPs, banks, and finance apps</p>
+        </div>
+        <div class="b-card" style="transition-delay:0.15s">
+          <div class="b-stat">99%</div>
+          <div class="b-stat-lbl">Accuracy Rate</div>
+          <p style="margin-top:0.6rem;font-size:0.78rem;color:var(--muted)">Every reconciliation verified</p>
+        </div>
+        <!-- row 2 -->
+        <div class="b-card" style="transition-delay:0.2s">
+          <span class="b-icon">⚡</span>
+          <h3>Accelerated Close</h3>
+          <p>Close books days faster with automated workflows.</p>
+        </div>
+        <div class="b-card b-wide accent" style="transition-delay:0.25s">
+          <span class="b-icon">🧠</span>
+          <h3>AI-Powered Insights</h3>
+          <p>Surface trends, variances, and anomalies instantly with natural language queries and predictive analytics — no SQL required.</p>
+          <div class="b-bar"><div class="b-bar-fill" style="width:75%"></div></div>
+        </div>
+        <div class="b-card" style="transition-delay:0.3s">
+          <span class="b-icon">🛡️</span>
+          <h3>Audit-Ready</h3>
+          <p>Every action logged and traceable. Prep time drops by 95%.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PICK SECTION -->
+<div class="pick-section reveal">
+  <h2>Which one do you want? 👆</h2>
+  <p>Tell me the number and I'll swap it into your main site instantly.</p>
+  <div class="pick-btns">
+    <button class="pick-btn" onclick="alert('Tell Claude: I want Style 1 — Horizontal Scroll!')">1 — Horizontal Scroll</button>
+    <button class="pick-btn" onclick="alert('Tell Claude: I want Style 2 — Morphing Card!')">2 — Morphing Card</button>
+    <button class="pick-btn" onclick="alert('Tell Claude: I want Style 3 — Split Panels!')">3 — Split Panels</button>
+    <button class="pick-btn" onclick="alert('Tell Claude: I want Style 4 — Timeline!')">4 — Timeline</button>
+    <button class="pick-btn" onclick="alert('Tell Claude: I want Style 5 — Bento Grid!')">5 — Bento Grid</button>
+  </div>
+</div>
+
+
+<script>
+// ── REVEAL ──
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); } });
+},{threshold:0.1});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+
+// ── NAV ACTIVE ──
+const sections = ['style1','style2','style3','style4','style5'];
+const navPills = document.querySelectorAll('.nav-pill');
+window.addEventListener('scroll',()=>{
+  let cur = '';
+  sections.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top <= 100) cur = id;
+  });
+  navPills.forEach(p=>{ p.classList.toggle('active', p.getAttribute('href')==='#'+cur); });
+},{passive:true});
+
+// ── STYLE 1: HORIZONTAL SCROLL ──
+(function(){
+  const outer = document.querySelector('.hscroll-outer');
+  const track = document.getElementById('htrack');
+  const cards = track.querySelectorAll('.hscroll-card');
+  const dots  = document.querySelectorAll('.hdot');
+  const pfill = document.getElementById('hpfill');
+  const N = cards.length;
+  let lastIdx = -1;
+
+  window.addEventListener('scroll',()=>{
+    if(!outer) return;
+    const rect = outer.getBoundingClientRect();
+    const scrollable = outer.offsetHeight - window.innerHeight;
+    const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+    pfill.style.width = (progress * 100) + '%';
+    const idx = Math.min(Math.floor(progress * N), N-1);
+    if(idx === lastIdx) return;
+    lastIdx = idx;
+    // shift track
+    const cardW = cards[0].offsetWidth + 24; // gap
+    const offset = idx * cardW - (track.parentElement.offsetWidth/2 - cardW/2);
+    track.style.transform = `translateX(${-Math.max(0,offset)}px)`;
+    cards.forEach((c,i)=>{
+      c.classList.toggle('active', i===idx);
+      c.classList.toggle('inactive', i!==idx);
+    });
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  },{passive:true});
+})();
+
+// ── STYLE 2: MORPHING CARD ──
+(function(){
+  const outer = document.querySelector('.morph-outer');
+  const msteps = document.querySelectorAll('.morph-step');
+  const mpanels = document.querySelectorAll('.morph-panel');
+  const mcard = document.getElementById('morph-card');
+  const N = msteps.length;
+  let last = -1;
+
+  window.addEventListener('scroll',()=>{
+    if(!outer) return;
+    const rect = outer.getBoundingClientRect();
+    const scrollable = outer.offsetHeight - window.innerHeight;
+    const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+    const idx = Math.min(Math.floor(progress * N), N-1);
+    if(idx === last) return;
+    last = idx;
+    msteps.forEach((s,i)=>s.classList.toggle('active',i===idx));
+    mpanels.forEach((p,i)=>p.classList.toggle('active',i===idx));
+  },{passive:true});
+})();
+
+// ── STYLE 3: ALT PANELS (just reveal) ──
+// Already handled by IntersectionObserver above
+
+// ── STYLE 4: TIMELINE ──
+(function(){
+  const inner = document.getElementById('style4-inner');
+  const fill  = document.getElementById('tl-fill');
+  const items = document.querySelectorAll('.tl-item');
+
+  const tlObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const wrap = document.querySelector('.timeline-wrap');
+      if(!wrap) return;
+      // animate line fill and cards sequentially
+      items.forEach((item, i)=>{
+        setTimeout(()=>{
+          item.classList.add('active');
+          fill.style.height = ((i+1)/items.length*100) + '%';
+        }, i * 350);
+      });
+      tlObs.unobserve(e.target);
+    });
+  },{threshold:0.2});
+  if(inner) tlObs.observe(inner);
+})();
+
+// ── STYLE 5: BENTO GRID ──
+(function(){
+  const cards = document.querySelectorAll('.b-card');
+  const bObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      cards.forEach((c,i)=>{
+        setTimeout(()=>c.classList.add('on'), i*100);
+      });
+      bObs.disconnect();
+    });
+  },{threshold:0.2});
+  const grid = document.querySelector('.bento-grid');
+  if(grid) bObs.observe(grid);
+
+  // hover tilt on bento cards
+  cards.forEach(c=>{
+    c.addEventListener('mousemove',e=>{
+      const r = c.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width-0.5;
+      const y = (e.clientY-r.top)/r.height-0.5;
+      c.style.transform = `perspective(500px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-6px) scale(1.02)`;
+    });
+    c.addEventListener('mouseleave',()=>{ c.style.transform=''; });
+  });
+})();
+</script>
+<script>
+(function(){
+  var items=document.querySelectorAll(".nav-links>li");
+  items.forEach(function(li){
+    var menu=li.querySelector(".drop-menu");
+    if(!menu)return;
+    var t;
+    function show(){clearTimeout(t);menu.classList.add("drop-open");}
+    function hide(){t=setTimeout(function(){menu.classList.remove("drop-open");},180);}
+    li.addEventListener("mouseenter",show);
+    li.addEventListener("mouseleave",hide);
+    menu.addEventListener("mouseenter",show);
+    menu.addEventListener("mouseleave",hide);
+  });
+})();
+</script>
+</body>
+</html>
