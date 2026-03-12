@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MeeruAI — Financial Clarity. Human Focus.</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;
+  --bg2:#f7f8ff;
+  --bg3:#f0f1fa;
+  --purple:#7c3aed;
+  --blue:#2563eb;
+  --cyan:#06b6d4;
+  --dark:#0d0e1c;
+  --text:#1a1b2e;
+  --muted:#6b7280;
+  --border:#e5e7f0;
+  --card:#ffffff;
+  --grad:linear-gradient(135deg,#7c3aed,#2563eb,#06b6d4);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#f0f0f0}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* ── SCROLL PROGRESS BAR ── */
+#progress-bar{
+  position:fixed;top:0;left:0;height:3px;width:0%;z-index:9999;
+  background:var(--grad);transition:width 0.05s linear;
+  box-shadow:0 0 10px rgba(124,58,237,0.5)
+}
+
+/* ── CURSOR GLOW ── */
+.cursor-glow{
+  position:fixed;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(124,58,237,0.05) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;z-index:0;
+  transform:translate(-50%,-50%);transition:left 0.2s,top 0.2s;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:1.2rem;left:50%;transform:translateX(-50%);
+  z-index:1000;width:calc(100% - 4rem);max-width:1100px;
+  background:rgba(255,255,255,0.75);backdrop-filter:blur(20px);
+  border:1px solid rgba(0,0,0,0.07);border-radius:16px;
+  padding:0.9rem 1.8rem;display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.4s;box-shadow:0 2px 20px rgba(0,0,0,0.04)
+}
+nav.scrolled{background:rgba(255,255,255,0.92);border-color:rgba(124,58,237,0.15);box-shadow:0 8px 40px rgba(124,58,237,0.08)}
+.nav-logo{text-decoration:none;display:flex;align-items:center}
+.nav-links{display:flex;gap:1.4rem;list-style:none;align-items:center}
+.nav-links>li{position:relative}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.87rem;font-weight:500;transition:color 0.3s;display:flex;align-items:center;gap:0.3rem;white-space:nowrap}
+.nav-links a:hover{color:var(--dark)}
+.nav-links>li>a.has-drop::after{content:'';display:inline-block;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform 0.25s;margin-left:2px}
+.nav-links>li:hover>a.has-drop::after{transform:rotate(-135deg) translateY(-2px)}
+
+/* dropdown */
+.drop-menu{
+  position:absolute;top:calc(100% + 0.75rem);left:50%;transform:translateX(-50%);
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);
+  border:1px solid rgba(0,0,0,0.07);border-radius:14px;
+  padding:0.5rem;min-width:210px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.10),0 2px 8px rgba(124,58,237,0.07);
+  opacity:0;pointer-events:none;transform:translateX(-50%) translateY(6px);
+  transition:opacity 0.22s ease,transform 0.22s ease;z-index:2000;
+  list-style:none
+}
+.nav-links>li .drop-menu.drop-open{opacity:1;pointer-events:auto}
+.drop-menu li a{
+  display:flex;align-items:center;gap:0.7rem;
+  padding:0.6rem 0.9rem;border-radius:9px;
+  color:var(--text);font-size:0.84rem;font-weight:500;
+  text-decoration:none;transition:background 0.18s,color 0.18s;white-space:nowrap
+}
+.drop-menu li a:hover{background:var(--bg2);color:var(--purple)}
+.drop-menu li a .di{font-size:1rem;width:1.4rem;text-align:center}
+.drop-divider{height:1px;background:var(--border);margin:0.35rem 0.5rem}
+
+.nav-cta{
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff!important;padding:0.5rem 1.3rem;border-radius:10px;
+  font-weight:600;font-size:0.85rem;
+  box-shadow:0 4px 15px rgba(124,58,237,0.25);
+  transition:opacity 0.3s,transform 0.2s!important
+}
+.nav-cta:hover{opacity:0.9;transform:translateY(-2px)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:8rem 5% 5rem;overflow:hidden;
+  background:var(--bg);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(124,58,237,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,58,237,0.04) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+/* blobs — lighter for light theme */
+.blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.blob-1{width:600px;height:600px;background:rgba(124,58,237,0.12);top:-15%;left:-10%;animation:blobFloat 12s ease-in-out infinite}
+.blob-2{width:500px;height:500px;background:rgba(37,99,235,0.1);top:10%;right:-10%;animation:blobFloat 14s ease-in-out infinite reverse}
+.blob-3{width:400px;height:400px;background:rgba(6,182,212,0.1);bottom:-10%;left:35%;animation:blobFloat 10s ease-in-out infinite 3s}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-20px) scale(1.04)}66%{transform:translate(-15px,15px) scale(0.97)}}
+
+.hero-inner{position:relative;z-index:1;max-width:860px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.2);
+  color:var(--purple);font-size:0.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  padding:0.45rem 1.2rem;border-radius:100px;margin-bottom:2rem;
+  opacity:0;transform:translateY(20px);animation:up 0.7s 0.2s forwards
+}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--purple);border-radius:50%;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.hero h1{
+  font-size:clamp(2.8rem,6.5vw,5.5rem);font-weight:900;line-height:1.05;
+  letter-spacing:-2px;color:var(--dark);margin-bottom:1.5rem;
+  opacity:0;transform:translateY(30px);animation:up 0.8s 0.4s forwards
+}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* typewriter word */
+.tw-word{
+  display:inline-block;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  min-width:280px;
+}
+.tw-cursor{
+  display:inline-block;width:3px;height:0.85em;
+  background:var(--purple);border-radius:2px;
+  vertical-align:middle;margin-left:3px;
+  animation:cursorBlink 1s infinite
+}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+.hero p{
+  font-size:1.1rem;color:var(--muted);max-width:600px;margin:0 auto 2.5rem;line-height:1.85;
+  opacity:0;transform:translateY(30px);animation:up 0.8s 0.6s forwards
+}
+.hero p strong{color:var(--text);font-weight:600}
+.hero-btns{
+  display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+  opacity:0;transform:translateY(30px);animation:up 0.8s 0.8s forwards
+}
+.btn-grad{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;padding:0.9rem 2.2rem;border-radius:12px;
+  font-weight:700;font-size:0.95rem;text-decoration:none;
+  box-shadow:0 4px 25px rgba(124,58,237,0.3);
+  transition:transform 0.25s,box-shadow 0.25s;position:relative;overflow:hidden
+}
+.btn-grad::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue),var(--cyan));opacity:0;transition:opacity 0.3s}
+.btn-grad:hover{transform:translateY(-3px);box-shadow:0 10px 35px rgba(124,58,237,0.4)}
+.btn-grad:hover::before{opacity:1}
+.btn-grad span{position:relative;z-index:1}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:transparent;color:var(--text);padding:0.9rem 2.2rem;border-radius:12px;
+  font-weight:600;font-size:0.95rem;text-decoration:none;
+  border:1.5px solid var(--border);
+  transition:background 0.3s,border-color 0.3s,transform 0.25s
+}
+.btn-ghost:hover{background:var(--bg2);border-color:rgba(124,58,237,0.3);transform:translateY(-3px)}
+/* hero stats */
+.hero-stats{
+  display:flex;margin-top:4rem;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,0.06);
+  opacity:0;animation:up 0.8s 1.2s forwards;
+  position:relative;z-index:1
+}
+.hero-stat{
+  flex:1;padding:1.4rem 2rem;text-align:center;
+  border-right:1px solid var(--border);transition:background 0.3s
+}
+.hero-stat:last-child{border-right:none}
+.hero-stat:hover{background:var(--bg2)}
+.hero-stat .num{
+  font-size:2rem;font-weight:900;letter-spacing:-1px;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.hero-stat .lbl{font-size:0.75rem;color:var(--muted);margin-top:0.2rem;font-weight:500}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+
+/* ── LOGO MARQUEE ── */
+.cardticker-wrap{
+  background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:2.5rem 0;overflow:visible;position:relative;z-index:10
+}
+.cardticker-wrap::before,.cardticker-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:140px;z-index:2;pointer-events:none
+}
+.cardticker-wrap::before{left:0;background:linear-gradient(90deg,#fff,transparent)}
+.cardticker-wrap::after{right:0;background:linear-gradient(-90deg,#fff,transparent)}
+.ct-label{
+  text-align:center;font-size:0.72rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem
+}
+.ct-overflow{overflow:hidden;position:relative}
+.ct-track{
+  display:flex;gap:1.5rem;width:max-content;
+  animation:ctick 38s linear infinite
+}
+.ct-track:hover{animation-play-state:paused}
+@keyframes ctick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* logo chip */
+.ct-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:14px;padding:.75rem 1.4rem;
+  display:flex;flex-direction:row;align-items:center;gap:1rem;
+  flex-shrink:0;cursor:pointer;position:relative;
+  transition:border-color .25s,box-shadow .25s,transform .25s;
+  min-width:200px
+}
+.ct-card:hover{
+  border-color:rgba(124,58,237,0.25);
+  box-shadow:0 8px 28px rgba(124,58,237,0.08);
+}
+.ct-logo{height:28px;width:auto;max-width:90px;display:block;flex-shrink:0;object-fit:contain;filter:grayscale(0);opacity:1}
+.ct-info{display:flex;flex-direction:column;gap:.15rem}
+.ct-name{font-size:.8rem;font-weight:700;color:var(--text);white-space:nowrap}
+.ct-stat{font-size:.72rem;color:var(--purple);font-weight:600;white-space:nowrap}
+
+
+/* hover popup — rendered at body level via JS */
+#ct-shared-popup{
+  position:fixed;
+  width:320px;background:#fff;border:1px solid #e5e7f0;
+  border-radius:20px;padding:1.6rem 1.6rem 1.4rem;
+  box-shadow:0 20px 60px rgba(0,0,0,0.13),0 4px 16px rgba(0,0,0,0.06);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s,transform .2s;z-index:9999;
+  transform:translateY(6px)
+}
+#ct-shared-popup.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+#ct-shared-popup::before{
+  content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:12px;height:12px;background:#fff;
+  border-left:1px solid #e5e7f0;border-top:1px solid #e5e7f0
+}
+/* hide inline popups — data only */
+.ct-popup{display:none}
+.ct-pop-quote{
+  font-size:.95rem;font-weight:500;color:#1a1b2e;
+  line-height:1.65;margin-bottom:1.3rem
+}
+.ct-pop-meta{display:flex;align-items:center;gap:.8rem}
+.ct-pop-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#7c3aed,#2563eb);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:800;color:#fff;letter-spacing:.02em
+}
+.ct-pop-name{font-size:.88rem;font-weight:700;color:#1a1b2e;margin-bottom:.15rem}
+.ct-pop-role{font-size:.76rem;color:#6b7280;line-height:1.4}
+
+/* ── SECTIONS ── */
+section{padding:7rem 5%;position:relative}
+.s-label{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--purple);margin-bottom:1rem
+}
+.s-label::before{content:'';width:20px;height:2px;background:var(--grad);border-radius:2px}
+.s-title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:1rem;color:var(--dark)}
+.s-sub{font-size:1rem;color:var(--muted);line-height:1.8;max-width:560px}
+.tc{text-align:center}.ma{margin:0 auto}.tc .s-sub{margin:0 auto}
+/* reveal */
+.reveal{opacity:0;transform:translateY(50px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal.on{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-50px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal-l.on{opacity:1;transform:none}
+.reveal-r{opacity:0;transform:translateX(50px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal-r.on{opacity:1;transform:none}
+
+/* ── PLATFORM DIAGRAM ── */
+#platform-diagram{background:#f8fafc;padding:5rem 4%;position:relative;overflow:hidden}
+.pd-header{text-align:center;margin-bottom:3.5rem}
+.pd-header .s-label{color:var(--purple)}
+.pd-header h2{color:#0f172a;font-size:clamp(1.7rem,3.2vw,2.6rem);font-weight:800;letter-spacing:-1px;margin-bottom:.7rem}
+.pd-header p{color:#64748b;max-width:520px;margin:0 auto;font-size:.92rem;line-height:1.7}
+.pd-sketch{display:flex;flex-direction:column;align-items:center;max-width:1100px;margin:0 auto}
+.pd-row{display:grid;grid-template-columns:1fr 70px 280px 70px 1fr;align-items:center;width:100%;gap:0}
+/* Sources */
+.pd-sources{display:flex;flex-direction:column;align-items:flex-end;gap:.45rem}
+.pd-col-title{font-size:.6rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#94a3b8;margin-bottom:.3rem;text-align:right}
+.pd-src-badge{padding:.4rem .9rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.78rem;font-weight:700;color:#334155;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer;transition:all .2s;text-align:center;min-width:90px}
+.pd-src-badge:hover,.pd-src-badge.pd-lit{border-color:var(--purple);background:#faf5ff;box-shadow:0 2px 8px rgba(124,58,237,.15)}
+/* Connectors */
+.pd-conn{display:flex;align-items:center;justify-content:center;overflow:visible}
+/* Center */
+.pd-center-wrap{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.pd-meeru-lbl{font-size:1.05rem;font-weight:900;color:#0f172a;letter-spacing:.02em;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+.pd-meeru-dot{width:8px;height:8px;border-radius:50%;background:var(--grad);display:inline-block;animation:mDot 2s ease-in-out infinite}
+@keyframes mDot{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.3)}}
+.pd-stack{display:flex;flex-direction:column;width:100%;gap:2px}
+.pd-layer{padding:.75rem 1.4rem;cursor:pointer;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#475569;background:#fff;border:1.5px solid #e2e8f0;transition:all .2s}
+.pd-layer:first-child{border-radius:8px 8px 0 0}
+.pd-layer:last-child{border-radius:0 0 8px 8px}
+.pd-layer:hover{background:#f1f5f9;border-color:#cbd5e1;color:#1e293b}
+.pd-layer.pd-active{background:#eef2ff;border-color:#6366f1;color:#3730a3;box-shadow:0 2px 8px rgba(99,102,241,.15)}
+/* Process */
+.pd-process-col{display:flex;flex-direction:column;align-items:flex-start;gap:.45rem}
+.pd-proc-col-title{font-size:.6rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#94a3b8;margin-bottom:.3rem}
+.pd-proc-badge{padding:.4rem .9rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.78rem;font-weight:700;color:#334155;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer;transition:all .2s;min-width:120px}
+.pd-proc-badge:hover,.pd-proc-badge.pd-lit{border-color:#6366f1;background:#eef2ff;box-shadow:0 2px 8px rgba(99,102,241,.15)}
+/* Down section */
+.pd-down-section{display:flex;flex-direction:column;align-items:center;margin-top:0}
+.pd-deliver-lbl{font-size:1.3rem;font-weight:900;color:#0f172a;letter-spacing:-.5px;margin-top:.4rem}
+.pd-deliver-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:.6rem;max-width:550px}
+.pd-deliver-chip{padding:.28rem .75rem;border-radius:20px;font-size:.72rem;font-weight:700;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}
+
+/* ── SOLUTIONS FEATURE EXPLORER ── */
+#solutions{background:#fff;padding:7rem 5%}
+.feat-wrap{display:flex;gap:4rem;align-items:stretch;max-width:1100px;margin:4rem auto 0;min-height:460px}
+.feat-list{flex:0 0 340px;display:flex;flex-direction:column;gap:.3rem}
+.feat-item{
+  padding:1.2rem 1.4rem;border-radius:14px;cursor:pointer;
+  border:1px solid transparent;transition:all .25s;position:relative
+}
+.feat-item:hover{background:var(--bg2)}
+.feat-item.active{background:var(--bg2);border-color:var(--border)}
+.feat-item-bar{
+  position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:0;border-radius:0 2px 2px 0;
+  background:var(--grad);transition:height .3s
+}
+.feat-item.active .feat-item-bar{height:60%}
+.feat-item-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:.3rem;opacity:0;transition:opacity .2s}
+.feat-item.active .feat-item-label,.feat-item:hover .feat-item-label{opacity:1}
+.feat-item h4{font-size:.97rem;font-weight:700;color:var(--dark);margin-bottom:.25rem}
+.feat-item p{font-size:.82rem;color:var(--muted);line-height:1.55;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s,opacity .3s}
+.feat-item.active p{max-height:80px;opacity:1}
+
+.feat-panel{
+  flex:1;background:var(--bg2);border:1px solid var(--border);
+  border-radius:22px;overflow:hidden;position:relative
+}
+.feat-slide{
+  position:absolute;inset:0;padding:2.4rem 2.6rem;
+  display:flex;flex-direction:column;justify-content:space-between;
+  opacity:0;transform:translateY(12px);
+  transition:opacity .35s,transform .35s;pointer-events:none
+}
+.feat-slide.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.feat-slide-tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.15);padding:.25rem .8rem;border-radius:50px;margin-bottom:1.2rem;align-self:flex-start}
+.feat-slide h3{font-size:1.5rem;font-weight:800;line-height:1.25;letter-spacing:-.5px;color:var(--dark);margin-bottom:.8rem}
+.feat-slide-desc{font-size:.9rem;color:var(--muted);line-height:1.7;max-width:420px}
+.feat-slide-vis{margin-top:1.8rem}
+
+/* visual elements inside panels */
+.fv-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--border);border-radius:12px;padding:.8rem 1.1rem;margin-bottom:.6rem;font-size:.82rem;gap:1rem}
+.fv-row-label{color:var(--text);font-weight:500}
+.fv-row-val{font-weight:700;color:var(--purple)}
+.fv-row-badge{font-size:.7rem;background:rgba(16,185,129,0.1);color:#059669;border-radius:50px;padding:.15rem .55rem;font-weight:600}
+
+.fv-integrations{display:flex;flex-wrap:wrap;gap:.5rem}
+.fv-pill{background:#fff;border:1px solid var(--border);border-radius:8px;padding:.4rem .8rem;font-size:.78rem;font-weight:600;color:var(--text)}
+
+.fv-bars{display:flex;align-items:flex-end;gap:6px;height:70px}
+.fv-b{border-radius:5px 5px 0 0;background:rgba(124,58,237,0.15)}
+.fv-b.on{background:linear-gradient(180deg,#7c3aed,#06b6d4)}
+
+.fv-metric-row{display:flex;gap:1.5rem}
+.fv-metric{text-align:center;background:#fff;border:1px solid var(--border);border-radius:12px;padding:.9rem 1.4rem;flex:1}
+.fv-metric-n{font-size:1.6rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fv-metric-l{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+
+.fv-checks{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.fv-checks li{font-size:.84rem;color:var(--muted);display:flex;align-items:center;gap:.6rem}
+.fv-check-dot{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#2563eb);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center}
+.fv-check-dot::after{content:'✓';font-size:.6rem;color:#fff;font-weight:800}
+
+@media(max-width:860px){.feat-wrap{flex-direction:column}.feat-list{flex:none}.feat-slide{position:relative;display:none}.feat-slide.active{display:flex}}
+
+/* ── HOW IT WORKS (STICKY SCROLL) ── */
+#how{background:var(--bg);padding:0;position:relative}
+#how::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,58,237,0.3),transparent)
+}
+.how-outer{height:400vh;position:relative}
+.how-sticky{
+  position:sticky;top:0;height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;padding:0 7%;overflow:hidden
+}
+.how-left{display:flex;flex-direction:column;justify-content:center}
+.how-steps{display:flex;flex-direction:column;gap:0.3rem;margin-top:2.5rem}
+.how-step{
+  display:flex;gap:1.2rem;align-items:flex-start;
+  padding:1rem 1.2rem;border-radius:14px;
+  border-left:2px solid var(--border);
+  transition:background 0.5s,border-color 0.5s;cursor:pointer;position:relative
+}
+.how-step.active{background:rgba(124,58,237,0.05);border-color:transparent}
+.how-step.active .step-bar{opacity:1}
+.step-bar{position:absolute;left:-2px;top:0;bottom:0;width:2px;background:var(--grad);border-radius:2px;opacity:0;transition:opacity 0.4s}
+.h-num{font-size:0.7rem;font-weight:800;letter-spacing:1px;color:rgba(0,0,0,0.18);min-width:22px;padding-top:3px;transition:color 0.4s}
+.how-step.active .h-num{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-text h4{font-size:0.97rem;font-weight:700;color:rgba(0,0,0,0.25);margin-bottom:0.3rem;transition:color 0.4s}
+.h-text p{font-size:0.82rem;color:rgba(0,0,0,0.2);line-height:1.6;transition:color 0.4s}
+.how-step.active .h-text h4{color:var(--dark)}
+.how-step.active .h-text p{color:var(--muted)}
+.h-fill{position:absolute;bottom:0;left:0;height:2px;width:0%;background:var(--grad);border-radius:0 2px 2px 0;transition:width 0.08s linear}
+/* right panels */
+.how-right{position:relative;height:480px}
+.how-panel{
+  position:absolute;inset:0;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:24px;padding:2rem;
+  box-shadow:0 8px 40px rgba(0,0,0,0.06);
+  opacity:0;transform:translateY(24px) scale(0.97);
+  transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  overflow:hidden;pointer-events:none
+}
+.how-panel.active{opacity:1;transform:none;pointer-events:all}
+.how-panel::before{
+  content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(124,58,237,0.06),transparent 70%);
+  border-radius:50%;pointer-events:none
+}
+.p-label{font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem}
+/* panel 0 */
+.erp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1.5rem}
+.erp-box{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:0.9rem;text-align:center;
+  font-size:0.78rem;font-weight:600;color:var(--muted);
+  transition:border-color 0.3s,background 0.3s,transform 0.3s
+}
+.erp-box:hover{border-color:rgba(124,58,237,0.3);background:rgba(124,58,237,0.04);transform:translateY(-2px)}
+.erp-box .e-icon{font-size:1.4rem;display:block;margin-bottom:0.4rem}
+.connect-line{height:2px;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.4),transparent);border-radius:2px;margin-bottom:1rem}
+.connect-status{
+  display:flex;align-items:center;gap:0.6rem;
+  background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);
+  border-radius:10px;padding:0.7rem 1rem;font-size:0.82rem;color:var(--muted)
+}
+.green-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;animation:blink 1.5s infinite;flex-shrink:0}
+/* panel 1 */
+.recon-row{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.65rem 0;border-bottom:1px solid var(--border);font-size:0.82rem
+}
+.r-status{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0}
+.r-ok{background:rgba(34,197,94,0.12);color:#16a34a}
+.r-ai{background:rgba(124,58,237,0.1);color:var(--purple)}
+.r-name{flex:1;color:var(--text)}
+.r-amt{color:var(--muted);font-size:0.8rem}
+.recon-footer{margin-top:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--muted)}
+.recon-footer strong{color:var(--purple)}
+/* panel 2 */
+.query-chip{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.15);border-radius:100px;padding:0.3rem 0.9rem;font-size:0.76rem;color:var(--purple);font-weight:500;margin-bottom:1rem}
+.query-input{background:var(--bg2);border:1px solid rgba(124,58,237,0.2);border-radius:12px;padding:0.9rem 1rem;font-size:0.87rem;color:var(--text);margin-bottom:1rem}
+.query-answer{background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.12);border-radius:12px;padding:1rem;font-size:0.85rem;color:var(--muted);line-height:1.7}
+.query-answer strong{color:var(--purple)}
+.q-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-top:1rem}
+.q-metric{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.7rem;text-align:center}
+.q-metric .qv{font-size:1.2rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.q-metric .ql{font-size:0.7rem;color:var(--muted)}
+/* panel 3 */
+.audit-item{display:flex;gap:1rem;padding:0.7rem 0;position:relative}
+.audit-item::before{content:'';position:absolute;left:9px;top:24px;width:2px;height:calc(100% - 4px);background:rgba(124,58,237,0.12)}
+.audit-item:last-child::before{display:none}
+.a-dot{width:20px;height:20px;border-radius:50%;background:rgba(124,58,237,0.1);border:2px solid rgba(124,58,237,0.25);flex-shrink:0;margin-top:2px;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;font-size:0.6rem}
+.a-dot.ok{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:#16a34a}
+.a-dot.ai{background:rgba(124,58,237,0.1);border-color:rgba(124,58,237,0.25);color:var(--purple)}
+.a-time{font-size:0.7rem;color:var(--muted);margin-bottom:0.2rem}
+.a-action{font-size:0.83rem;color:var(--text)}
+.a-badge{display:inline-block;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#16a34a;font-size:0.68rem;font-weight:600;padding:0.1rem 0.5rem;border-radius:100px;margin-left:0.5rem}
+
+/* ── ABOUT ── */
+#about{background:var(--bg2)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:4rem}
+.about-text p{font-size:0.95rem;color:var(--muted);line-height:1.9;margin-bottom:1.2rem}
+.about-chips{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.5rem}
+.chip{background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.15);color:var(--purple);padding:0.35rem 1rem;border-radius:100px;font-size:0.75rem;font-weight:600;transition:background 0.3s,transform 0.2s}
+.chip:hover{background:rgba(124,58,237,0.14);transform:translateY(-2px)}
+.glass-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:24px;padding:2.5rem;position:relative;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,0.06)
+}
+.glass-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;
+  background:radial-gradient(circle,rgba(124,58,237,0.06),transparent 70%);
+  border-radius:50%;pointer-events:none
+}
+.glass-card .quote{
+  font-size:2.2rem;font-weight:900;letter-spacing:-1px;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.1;margin-bottom:1rem
+}
+.glass-card p{font-size:0.9rem;color:var(--muted);line-height:1.85}
+.glass-card strong{color:var(--text);font-weight:600}
+.about-visual{position:relative}
+.float-pill{
+  position:absolute;bottom:-1.2rem;right:-1rem;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:14px;padding:1rem 1.4rem;
+  display:flex;align-items:center;gap:0.8rem;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  transition:transform 0.3s,box-shadow 0.3s
+}
+.float-pill:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(124,58,237,0.1)}
+.float-pill .dot{width:10px;height:10px;background:#22c55e;border-radius:50%;animation:blink 2s infinite;flex-shrink:0}
+.float-pill .info{font-size:0.8rem;color:var(--muted)}
+.float-pill .info strong{display:block;color:var(--dark);font-size:0.9rem;font-weight:700}
+
+/* ── WHY ── */
+#why{background:var(--bg)}
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-top:4rem}
+.why-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:2.2rem;position:relative;overflow:hidden;
+  transition:transform 0.4s,border-color 0.4s,box-shadow 0.4s
+}
+.why-card::after{
+  content:'';position:absolute;bottom:-30px;right:-30px;
+  width:120px;height:120px;
+  background:radial-gradient(circle,rgba(124,58,237,0.08) 0%,transparent 70%);
+  border-radius:50%;transition:transform 0.5s,opacity 0.4s;opacity:0
+}
+.why-card:hover{transform:translateY(-8px);border-color:rgba(124,58,237,0.2);box-shadow:0 20px 50px rgba(124,58,237,0.08)}
+.why-card:hover::after{opacity:1;transform:scale(2.5)}
+.why-card-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem}
+.why-icon{font-size:1.6rem;flex-shrink:0}
+.why-card h3{font-size:1.05rem;font-weight:800;color:var(--dark);margin:0}
+.why-card p{font-size:0.87rem;color:var(--muted);line-height:1.75}
+
+/* ── DEMO ── */
+#demo{background:var(--bg2)}
+.form-container{
+  max-width:760px;margin:3.5rem auto 0;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:28px;padding:3rem;
+  box-shadow:0 20px 60px rgba(0,0,0,0.06);position:relative;overflow:hidden
+}
+.form-container::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:280px;height:280px;
+  background:radial-gradient(circle,rgba(124,58,237,0.05),transparent 70%);
+  border-radius:50%;pointer-events:none
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+.form-full{grid-column:1/-1}
+.f-group{display:flex;flex-direction:column;gap:0.4rem}
+.f-group label{font-size:0.8rem;font-weight:600;color:var(--text)}
+.f-group label span{color:var(--purple)}
+.f-group input,.f-group textarea{
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:12px;padding:0.9rem 1.1rem;
+  color:var(--text);font-family:inherit;font-size:0.9rem;
+  outline:none;transition:border-color 0.3s,box-shadow 0.3s,background 0.3s;
+  resize:vertical
+}
+.f-group input:focus,.f-group textarea:focus{
+  border-color:rgba(124,58,237,0.5);
+  box-shadow:0 0 0 3px rgba(124,58,237,0.08);
+  background:var(--bg)
+}
+.f-group textarea{min-height:90px}
+.form-note{font-size:0.77rem;color:var(--muted);margin:1rem 0}
+.form-note a{color:var(--purple);text-decoration:none}
+.form-note a:hover{text-decoration:underline}
+.btn-submit{
+  width:100%;padding:1rem;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;font-family:inherit;font-size:1rem;font-weight:700;
+  cursor:pointer;transition:transform 0.25s,box-shadow 0.3s;
+  box-shadow:0 4px 25px rgba(124,58,237,0.3);position:relative;overflow:hidden
+}
+.btn-submit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue),var(--cyan));opacity:0;transition:opacity 0.3s}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(124,58,237,0.4)}
+.btn-submit:hover::before{opacity:1}
+.btn-submit span{position:relative;z-index:1}
+
+/* ── FOOTER ── */
+footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+.f-brand-logo{font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:0.8rem}
+.f-brand-logo span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.f-brand p{font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.7;max-width:240px}
+.f-socials{display:flex;gap:0.7rem;margin-top:1.3rem}
+.f-soc{
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.9rem;font-weight:700;
+  transition:background 0.3s,color 0.3s,border-color 0.3s,transform 0.2s
+}
+.f-soc:hover{background:var(--purple);color:#fff;border-color:var(--purple);transform:translateY(-3px)}
+.f-col h4{font-size:0.78rem;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:1.2rem}
+.f-col ul{list-style:none}
+.f-col li{margin-bottom:0.7rem}
+.f-col a{font-size:0.87rem;color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.3s}
+.f-col a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:0.8rem;color:rgba(255,255,255,0.25)}
+.f-bottom-links{display:flex;gap:1.5rem}
+.f-bottom-links a{font-size:0.8rem;color:rgba(255,255,255,0.25);text-decoration:none;transition:color 0.3s}
+.f-bottom-links a:hover{color:#a78bfa}
+
+/* ── SCROLL TOP ── */
+#st{
+  position:fixed;bottom:2rem;right:2rem;z-index:999;
+  width:46px;height:46px;border-radius:14px;border:none;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.3s,transform 0.3s,box-shadow 0.3s;
+  box-shadow:0 4px 20px rgba(124,58,237,0.3)
+}
+#st.show{opacity:1;pointer-events:all}
+#st:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(124,58,237,0.4)}
+
+/* ── TOAST NOTIFICATIONS ── */
+.toast-container{position:fixed;bottom:2rem;left:2rem;z-index:998;display:flex;flex-direction:column;gap:0.7rem;pointer-events:none}
+.toast{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:0.9rem 1.2rem;
+  display:flex;align-items:center;gap:0.8rem;
+  box-shadow:0 8px 30px rgba(0,0,0,0.1);
+  min-width:260px;max-width:320px;
+  opacity:0;transform:translateX(-20px) scale(0.97);
+  transition:opacity 0.4s,transform 0.4s;pointer-events:auto
+}
+.toast.show{opacity:1;transform:translateX(0) scale(1)}
+.toast.hide{opacity:0;transform:translateX(-20px) scale(0.97)}
+.toast-icon{font-size:1.3rem;flex-shrink:0}
+.toast-text{font-size:0.82rem;color:var(--text);line-height:1.4;font-weight:500}
+.toast-text strong{color:var(--purple)}
+.toast-close{margin-left:auto;font-size:0.8rem;color:var(--muted);cursor:pointer;background:none;border:none;padding:0.1rem 0.3rem;border-radius:4px;transition:color 0.2s;pointer-events:auto}
+.toast-close:hover{color:var(--text)}
+.toast-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;flex-shrink:0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .sol-grid{grid-template-columns:repeat(2,1fr)}
+  .how-sticky{grid-template-columns:1fr;height:auto;position:relative;padding:4rem 5%}
+  .how-outer{height:auto}
+  .how-right{height:380px;margin-top:2rem}
+  .about-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .hero h1{font-size:2.5rem;letter-spacing:-1px}
+  .sol-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  section{padding:5rem 5%}
+  .form-container{padding:1.8rem}
+  .footer-grid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column}
+  .hero-stat{border-right:none;border-bottom:1px solid var(--border)}
+  .hero-stat:last-child{border-bottom:none}
+  .how-right{height:300px}
+  .erp-grid{grid-template-columns:repeat(2,1fr)}
+  .toast-container{left:1rem;right:1rem;bottom:1rem}
+  .toast{min-width:unset}
+  .tw-word{min-width:unset}
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="progress-bar"></div>
+
+<div class="cursor-glow" id="cg"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo"><img src="logo.svg" alt="MeeruAI" height="52" style="display:block"/></a>
+  <ul class="nav-links">
+    <li>
+      <a href="#" class="has-drop" onclick="return false">Platform</a>
+      <ul class="drop-menu">
+        <li><a href="reporting-analytics.html">Reporting & Analytics</a></li>
+        <li><a href="accounting-integrations.html">Accounting Integrations</a></li>
+        <li><a href="planning-budgeting.html">Planning & Budgeting</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="has-drop" onclick="return false">How It Works</a>
+      <ul class="drop-menu">
+        <li><a href="for-finance-teams.html">For Finance Teams</a></li>
+        <li><a href="for-controllers.html">For Controllers</a></li>
+        <li><a href="for-cfos.html">For CFOs</a></li>
+        <div class="drop-divider"></div>
+        <li><a href="see-demo.html">See a Live Demo</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="has-drop" onclick="return false">About Us</a>
+      <ul class="drop-menu">
+        <li><a href="our-story.html">Our Story</a></li>
+        <li><a href="leadership.html">Leadership</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <div class="drop-divider"></div>
+        <li><a href="press.html">Press & Media</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="has-drop" onclick="return false">Contact</a>
+      <ul class="drop-menu">
+        <li><a href="request-demo.html">Request Demo</a></li>
+        <li><a href="talk-to-sales.html">Talk to Sales</a></li>
+        <li><a href="support.html">Support</a></li>
+      </ul>
+    </li>
+    <li><a href="request-demo.html" class="nav-cta">Request Demo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">✦ AI-Powered Financial Intelligence</div>
+    <h1>Financial Clarity.<br/><span class="tw-word" id="tw-word">Human Focus.</span><span class="tw-cursor" id="tw-cursor"></span></h1>
+    <p>
+      Meeru AI unifies your financial data into one intelligent, agentic platform.
+      <strong>Accelerate the close, automate your workflows,</strong> and surface insights you can trust —
+      with AI that works alongside you, not instead of you.
+    </p>
+    <div class="hero-btns">
+      <a href="#demo" class="btn-grad"><span>Schedule a Demo</span> <span>→</span></a>
+      <a href="#solutions" class="btn-ghost">Learn More</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num" data-target="80" data-suffix="%">0%</div><div class="lbl">Faster Close</div></div>
+      <div class="hero-stat"><div class="num" data-target="99" data-suffix="%">0%</div><div class="lbl">Accuracy Rate</div></div>
+      <div class="hero-stat"><div class="num" data-target="10" data-suffix="×">0×</div><div class="lbl">Average ROI</div></div>
+      <div class="hero-stat"><div class="num" data-target="500" data-suffix="+">0+</div><div class="lbl">Finance Teams</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO MARQUEE -->
+<div class="cardticker-wrap">
+  <div class="ct-label">Trusted by modern finance teams worldwide</div>
+  <div class="ct-overflow">
+  <div class="ct-track">
+
+    <div class="ct-card"><img class="ct-logo" src="uber.png" alt="Uber"/><div class="ct-info"><span class="ct-name">Uber</span><span class="ct-stat">8→3 day close</span></div><div class="ct-popup"><div class="ct-pop-quote">"MeeruAI cut our month-end close from 8 days to under 3. The reconciliation automation alone saved us hundreds of hours."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">JL</div><div><div class="ct-pop-name">Jamie Liu</div><div class="ct-pop-role">Controller, Uber</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="doordash.png" alt="DoorDash"/><div class="ct-info"><span class="ct-name">DoorDash</span><span class="ct-stat">One source of truth</span></div><div class="ct-popup"><div class="ct-pop-quote">"We went from spreadsheet chaos to a single source of truth. Our finance team now spends time on strategy, not data entry."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">MR</div><div><div class="ct-pop-name">Marcus Reid</div><div class="ct-pop-role">VP Finance, DoorDash</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="cisco.png" alt="Cisco"/><div class="ct-info"><span class="ct-name">Cisco</span><span class="ct-stat">Audit-ready 24/7</span></div><div class="ct-popup"><div class="ct-pop-quote">"The audit trail MeeruAI generates is exactly what our compliance team needs. We're always ready, not just at quarter-end."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">SP</div><div><div class="ct-pop-name">Sandra Park</div><div class="ct-pop-role">CFO, Cisco Enterprise</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="flexjet.png" alt="Flexjet"/><div class="ct-info"><span class="ct-name">Flexjet</span><span class="ct-stat">Multi-entity in hours</span></div><div class="ct-popup"><div class="ct-pop-quote">"Complex multi-entity consolidations used to take weeks. With MeeruAI, it's done before our Monday standup."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">TR</div><div><div class="ct-pop-name">Tom Reynolds</div><div class="ct-pop-role">Director of Finance, Flexjet</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="formfactor.png" alt="FormFactor"/><div class="ct-info"><span class="ct-name">FormFactor</span><span class="ct-stat">3× faster FP&amp;A</span></div><div class="ct-popup"><div class="ct-pop-quote">"We saw ROI within the first quarter. The forecasting module alone replaced three separate tools we were paying for."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">AK</div><div><div class="ct-pop-name">Anika Kapoor</div><div class="ct-pop-role">Head of FP&A, FormFactor</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="airbnb.png" alt="Airbnb"/><div class="ct-info"><span class="ct-name">Airbnb</span><span class="ct-stat">Stress-free month-end</span></div><div class="ct-popup"><div class="ct-pop-quote">"Our controllers used to dread month-end. Now it's the most boring part of the month — and that's exactly how we like it."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">CW</div><div><div class="ct-pop-name">Chris Wong</div><div class="ct-pop-role">Controller, Airbnb</div></div></div></div></div>
+    <div class="ct-card"><svg class="ct-logo" viewBox="0 0 55 24" xmlns="http://www.w3.org/2000/svg"><text y="19" font-family="Arial Black,Helvetica,sans-serif" font-weight="900" font-size="19" fill="#635BFF">stripe</text></svg><div class="ct-info"><span class="ct-name">Stripe</span><span class="ct-stat">$2B volume automated</span></div><div class="ct-popup"><div class="ct-pop-quote">"Reconciling $2B in monthly volume used to require a team of 6 working nights. MeeruAI handles it automatically, with a full audit trail."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">NB</div><div><div class="ct-pop-name">Nina Brennan</div><div class="ct-pop-role">Sr. Accountant, Stripe</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="shopify.png" alt="Shopify"/><div class="ct-info"><span class="ct-name">Shopify</span><span class="ct-stat">Board pack automated</span></div><div class="ct-popup"><div class="ct-pop-quote">"MeeruAI replaced hours of manual report prep every week. Now our board pack is ready before we even ask for it."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">DM</div><div><div class="ct-pop-name">David Marsh</div><div class="ct-pop-role">Finance Manager, Shopify</div></div></div></div></div>
+    <!-- duplicate for seamless loop -->
+    <div class="ct-card"><img class="ct-logo" src="uber.png" alt="Uber"/><div class="ct-info"><span class="ct-name">Uber</span><span class="ct-stat">8→3 day close</span></div><div class="ct-popup"><div class="ct-pop-quote">"MeeruAI cut our month-end close from 8 days to under 3. The reconciliation automation alone saved us hundreds of hours."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">JL</div><div><div class="ct-pop-name">Jamie Liu</div><div class="ct-pop-role">Controller, Uber</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="doordash.png" alt="DoorDash"/><div class="ct-info"><span class="ct-name">DoorDash</span><span class="ct-stat">One source of truth</span></div><div class="ct-popup"><div class="ct-pop-quote">"We went from spreadsheet chaos to a single source of truth. Our finance team now spends time on strategy, not data entry."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">MR</div><div><div class="ct-pop-name">Marcus Reid</div><div class="ct-pop-role">VP Finance, DoorDash</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="cisco.png" alt="Cisco"/><div class="ct-info"><span class="ct-name">Cisco</span><span class="ct-stat">Audit-ready 24/7</span></div><div class="ct-popup"><div class="ct-pop-quote">"The audit trail MeeruAI generates is exactly what our compliance team needs. We're always ready, not just at quarter-end."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">SP</div><div><div class="ct-pop-name">Sandra Park</div><div class="ct-pop-role">CFO, Cisco Enterprise</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="flexjet.png" alt="Flexjet"/><div class="ct-info"><span class="ct-name">Flexjet</span><span class="ct-stat">Multi-entity in hours</span></div><div class="ct-popup"><div class="ct-pop-quote">"Complex multi-entity consolidations used to take weeks. With MeeruAI, it's done before our Monday standup."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">TR</div><div><div class="ct-pop-name">Tom Reynolds</div><div class="ct-pop-role">Director of Finance, Flexjet</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="formfactor.png" alt="FormFactor"/><div class="ct-info"><span class="ct-name">FormFactor</span><span class="ct-stat">3× faster FP&amp;A</span></div><div class="ct-popup"><div class="ct-pop-quote">"We saw ROI within the first quarter. The forecasting module alone replaced three separate tools we were paying for."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">AK</div><div><div class="ct-pop-name">Anika Kapoor</div><div class="ct-pop-role">Head of FP&A, FormFactor</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="airbnb.png" alt="Airbnb"/><div class="ct-info"><span class="ct-name">Airbnb</span><span class="ct-stat">Stress-free month-end</span></div><div class="ct-popup"><div class="ct-pop-quote">"Our controllers used to dread month-end. Now it's the most boring part of the month — and that's exactly how we like it."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">CW</div><div><div class="ct-pop-name">Chris Wong</div><div class="ct-pop-role">Controller, Airbnb</div></div></div></div></div>
+    <div class="ct-card"><svg class="ct-logo" viewBox="0 0 55 24" xmlns="http://www.w3.org/2000/svg"><text y="19" font-family="Arial Black,Helvetica,sans-serif" font-weight="900" font-size="19" fill="#635BFF">stripe</text></svg><div class="ct-info"><span class="ct-name">Stripe</span><span class="ct-stat">$2B volume automated</span></div><div class="ct-popup"><div class="ct-pop-quote">"Reconciling $2B in monthly volume used to require a team of 6 working nights. MeeruAI handles it automatically, with a full audit trail."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">NB</div><div><div class="ct-pop-name">Nina Brennan</div><div class="ct-pop-role">Sr. Accountant, Stripe</div></div></div></div></div>
+    <div class="ct-card"><img class="ct-logo" src="shopify.png" alt="Shopify"/><div class="ct-info"><span class="ct-name">Shopify</span><span class="ct-stat">Board pack automated</span></div><div class="ct-popup"><div class="ct-pop-quote">"MeeruAI replaced hours of manual report prep every week. Now our board pack is ready before we even ask for it."</div><div class="ct-pop-meta"><div class="ct-pop-avatar">DM</div><div><div class="ct-pop-name">David Marsh</div><div class="ct-pop-role">Finance Manager, Shopify</div></div></div></div></div>
+
+  </div>
+  </div>
+</div>
+
+<!-- PLATFORM DIAGRAM -->
+<section id="platform-diagram">
+  <div class="pd-header reveal">
+    <div class="s-label">How MeeruAI Works</div>
+    <h2>One platform. Every data source.<br/><span style="background:linear-gradient(135deg,#34d399,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Instant financial insight.</span></h2>
+    <p>Click any source or layer to explore how MeeruAI processes your finance data.</p>
+  </div>
+
+  <div class="pd-sketch reveal">
+
+    <div class="pd-row">
+
+      <!-- LEFT: Data Sources -->
+      <div class="pd-sources">
+        <div class="pd-col-title">Data Sources</div>
+        <div class="pd-src-badge" data-layer="ingest">SAP</div>
+        <div class="pd-src-badge" data-layer="ingest">ERP</div>
+        <div class="pd-src-badge" data-layer="ingest">Oracle</div>
+        <div class="pd-src-badge" data-layer="ingest">NetSuite</div>
+        <div class="pd-src-badge" data-layer="ingest">QuickBooks</div>
+        <div class="pd-src-badge" data-layer="ingest">Xero</div>
+      </div>
+
+      <!-- LEFT CONNECTOR → -->
+      <div class="pd-conn">
+        <svg width="70" height="120" viewBox="0 0 70 120" overflow="visible">
+          <defs>
+            <marker id="arL1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgba(99,102,241,.7)"/></marker>
+            <marker id="arL2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgba(99,102,241,.5)"/></marker>
+          </defs>
+          <line x1="0" y1="50" x2="62" y2="50" stroke="rgba(99,102,241,.4)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arL1)"><animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.2s" repeatCount="indefinite"/></line>
+          <line x1="0" y1="70" x2="62" y2="70" stroke="rgba(99,102,241,.25)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arL2)"><animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.6s" repeatCount="indefinite"/></line>
+        </svg>
+      </div>
+
+      <!-- CENTER: MeeruAI -->
+      <div class="pd-center-wrap">
+        <div class="pd-meeru-lbl"><span class="pd-meeru-dot"></span>MeeruAI<span class="pd-meeru-dot"></span></div>
+        <div class="pd-stack">
+          <div class="pd-layer" data-layer="ingest">Ingest</div>
+          <div class="pd-layer" data-layer="reconcile">Reconcile</div>
+          <div class="pd-layer" data-layer="analyze">Analyze</div>
+          <div class="pd-layer" data-layer="report">Report</div>
+          <div class="pd-layer" data-layer="forecast">Forecast</div>
+        </div>
+      </div>
+
+      <!-- RIGHT CONNECTOR ← -->
+      <div class="pd-conn">
+        <svg width="70" height="120" viewBox="0 0 70 120" overflow="visible">
+          <defs>
+            <marker id="arR1" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto"><path d="M6,0 L6,6 L0,3 z" fill="rgba(99,102,241,.7)"/></marker>
+            <marker id="arR2" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto"><path d="M6,0 L6,6 L0,3 z" fill="rgba(99,102,241,.5)"/></marker>
+          </defs>
+          <line x1="8" y1="50" x2="70" y2="50" stroke="rgba(99,102,241,.4)" stroke-width="1.5" stroke-dasharray="5 4" marker-start="url(#arR1)"><animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.4s" repeatCount="indefinite"/></line>
+          <line x1="8" y1="70" x2="70" y2="70" stroke="rgba(99,102,241,.25)" stroke-width="1.5" stroke-dasharray="5 4" marker-start="url(#arR2)"><animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.7s" repeatCount="indefinite"/></line>
+        </svg>
+      </div>
+
+      <!-- RIGHT: Process Inputs -->
+      <div class="pd-process-col">
+        <div class="pd-proc-col-title">Process Inputs</div>
+        <div class="pd-proc-badge" data-layer="reconcile">Txn Data</div>
+        <div class="pd-proc-badge" data-layer="reconcile">Journal Entries</div>
+        <div class="pd-proc-badge" data-layer="analyze">Budget vs Actual</div>
+        <div class="pd-proc-badge" data-layer="reconcile">Bank Statements</div>
+        <div class="pd-proc-badge" data-layer="analyze">GL Data</div>
+      </div>
+
+    </div><!-- end pd-row -->
+
+    <!-- DOWN ARROW + DELIVER INSIGHTS -->
+    <div class="pd-down-section">
+      <svg width="24" height="48" viewBox="0 0 24 48">
+        <line x1="12" y1="0" x2="12" y2="38" stroke="#6366f1" stroke-width="2" stroke-dasharray="4 3"><animate attributeName="stroke-dashoffset" from="0" to="-14" dur="1s" repeatCount="indefinite"/></line>
+        <polygon points="12,48 5,36 19,36" fill="#6366f1"/>
+      </svg>
+      <div class="pd-deliver-lbl">Deliver Insights</div>
+      <div class="pd-deliver-chips">
+        <span class="pd-deliver-chip">Live Dashboard</span>
+        <span class="pd-deliver-chip">Audit Trail</span>
+        <span class="pd-deliver-chip">Forecasting</span>
+        <span class="pd-deliver-chip">Reports</span>
+        <span class="pd-deliver-chip">Alerts</span>
+        <span class="pd-deliver-chip">Board Pack</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SOLUTIONS -->
+<section id="solutions">
+  <div class="tc reveal">
+    <div class="s-label">What We Do</div>
+    <h2 class="s-title">Your finance stack,<br/><span class="grad-text">finally working together.</span></h2>
+    <p class="s-sub">MeeruAI connects your data, automates the grunt work, and surfaces what actually matters.</p>
+  </div>
+
+  <div class="feat-wrap reveal">
+    <!-- LEFT: feature list -->
+    <div class="feat-list">
+      <div class="feat-item active" data-feat="0">
+        <div class="feat-item-bar"></div>
+        <div class="feat-item-label">Close Management</div>
+        <h4>Faster month-end close</h4>
+        <p>Automated reconciliations cut your close from 7 days to same-day. Your team reviews exceptions, not every line.</p>
+      </div>
+      <div class="feat-item" data-feat="1">
+        <div class="feat-item-bar"></div>
+        <div class="feat-item-label">Integrations</div>
+        <h4>Connects to your existing stack</h4>
+        <p>Native connectors for every major ERP, bank, and finance tool. No exports, no copy-paste.</p>
+      </div>
+      <div class="feat-item" data-feat="2">
+        <div class="feat-item-bar"></div>
+        <div class="feat-item-label">Analytics</div>
+        <h4>Reports that build themselves</h4>
+        <p>Scheduled P&amp;L, variance analysis, and board packs delivered automatically to whoever needs them.</p>
+      </div>
+      <div class="feat-item" data-feat="3">
+        <div class="feat-item-bar"></div>
+        <div class="feat-item-label">Forecasting</div>
+        <h4>Budgets that update as actuals come in</h4>
+        <p>Rolling forecasts and scenario modeling in seconds. No more static spreadsheets going stale.</p>
+      </div>
+      <div class="feat-item" data-feat="4">
+        <div class="feat-item-bar"></div>
+        <div class="feat-item-label">Compliance</div>
+        <h4>Audit-ready without the scramble</h4>
+        <p>Every entry, approval, and change is logged. Audit prep goes from weeks to a single export.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT: detail panel -->
+    <div class="feat-panel">
+
+      <!-- Slide 0: Close -->
+      <div class="feat-slide active">
+        <div>
+          <div class="feat-slide-tag">Month-end Close</div>
+          <h3>Close your books in hours,<br/>not days</h3>
+          <p class="feat-slide-desc">Automated journal matching, reconciliation, and approval workflows run overnight. Your team arrives to a list of exceptions — not a blank spreadsheet.</p>
+        </div>
+        <div class="feat-slide-vis">
+          <div class="fv-row"><span class="fv-row-label">Bank reconciliation</span><span class="fv-row-badge">✓ Auto-matched</span><span class="fv-row-val">2 min</span></div>
+          <div class="fv-row"><span class="fv-row-label">Journal entries reviewed</span><span class="fv-row-badge">98% auto</span><span class="fv-row-val">14 sec</span></div>
+          <div class="fv-row"><span class="fv-row-label">Close checklist</span><span class="fv-row-badge">✓ Complete</span><span class="fv-row-val">Day 1</span></div>
+        </div>
+      </div>
+
+      <!-- Slide 1: Integrations -->
+      <div class="feat-slide">
+        <div>
+          <div class="feat-slide-tag">Integrations</div>
+          <h3>Plugs into every tool<br/>your team already uses</h3>
+          <p class="feat-slide-desc">50+ pre-built connectors. Two-way sync. No dev work required — map fields yourself and go live in under a day.</p>
+        </div>
+        <div class="feat-slide-vis">
+          <div class="fv-integrations">
+            <span class="fv-pill">QuickBooks</span><span class="fv-pill">NetSuite</span><span class="fv-pill">Sage</span><span class="fv-pill">SAP</span><span class="fv-pill">Xero</span><span class="fv-pill">Stripe</span><span class="fv-pill">Plaid</span><span class="fv-pill">Salesforce</span><span class="fv-pill">+ 40 more</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Analytics -->
+      <div class="feat-slide">
+        <div>
+          <div class="feat-slide-tag">Analytics</div>
+          <h3>From raw data to<br/>board-ready in minutes</h3>
+          <p class="feat-slide-desc">Dashboards update live. Reports schedule themselves. Drill into any number and trace it straight to the source transaction.</p>
+        </div>
+        <div class="feat-slide-vis">
+          <div class="fv-metric-row">
+            <div class="fv-metric"><div class="fv-metric-n">10×</div><div class="fv-metric-l">faster reporting</div></div>
+            <div class="fv-metric"><div class="fv-metric-n">99.8%</div><div class="fv-metric-l">data accuracy</div></div>
+            <div class="fv-metric"><div class="fv-metric-n">$2B+</div><div class="fv-metric-l">reconciled/mo</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Forecasting -->
+      <div class="feat-slide">
+        <div>
+          <div class="feat-slide-tag">Forecasting</div>
+          <h3>Live forecasts that move<br/>with your business</h3>
+          <p class="feat-slide-desc">Rolling budgets, headcount planning, and what-if scenarios — all connected to your actuals so they never go stale.</p>
+        </div>
+        <div class="feat-slide-vis">
+          <div class="fv-bars">
+            <div class="fv-b" style="height:45%;flex:1"></div>
+            <div class="fv-b" style="height:60%;flex:1"></div>
+            <div class="fv-b" style="height:50%;flex:1"></div>
+            <div class="fv-b" style="height:75%;flex:1"></div>
+            <div class="fv-b" style="height:65%;flex:1"></div>
+            <div class="fv-b on" style="height:40%;flex:1"></div>
+            <div class="fv-b on" style="height:35%;flex:1;opacity:.7"></div>
+            <div class="fv-b on" style="height:30%;flex:1;opacity:.5;border:1.5px dashed #7c3aed;background:transparent"></div>
+            <div class="fv-b on" style="height:25%;flex:1;opacity:.4;border:1.5px dashed #7c3aed;background:transparent"></div>
+          </div>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem">Actuals (solid) vs. rolling forecast (dashed) — updates automatically</p>
+        </div>
+      </div>
+
+      <!-- Slide 4: Compliance -->
+      <div class="feat-slide">
+        <div>
+          <div class="feat-slide-tag">Compliance</div>
+          <h3>Every action logged.<br/>Always audit-ready.</h3>
+          <p class="feat-slide-desc">MeeruAI creates an immutable audit trail automatically — who changed what, when, and why. No prep needed when auditors arrive.</p>
+        </div>
+        <div class="feat-slide-vis">
+          <ul class="fv-checks">
+            <li><span class="fv-check-dot"></span>SOC 2 Type II certified</li>
+            <li><span class="fv-check-dot"></span>GAAP &amp; IFRS aligned reporting</li>
+            <li><span class="fv-check-dot"></span>Full change log with user attribution</li>
+            <li><span class="fv-check-dot"></span>One-click audit export package</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS — STICKY SCROLL -->
+<section id="how">
+  <div class="how-outer">
+    <div class="how-sticky">
+      <div class="how-left">
+        <div class="s-label">How It Works</div>
+        <h2 class="s-title">Finance AI that<br/><span class="grad-text">actually works</span></h2>
+        <div class="how-steps">
+          <div class="how-step active" data-step="0">
+            <div class="step-bar"></div><div class="h-num">01</div>
+            <div class="h-text"><h4>Connect Your Data</h4><p>Sync every ERP, bank feed, and data source in minutes with zero-config connectors.</p></div>
+            <div class="h-fill"></div>
+          </div>
+          <div class="how-step" data-step="1">
+            <div class="step-bar"></div><div class="h-num">02</div>
+            <div class="h-text"><h4>AI Closes Your Books</h4><p>Automated reconciliations run overnight — no manual entry, no errors.</p></div>
+            <div class="h-fill"></div>
+          </div>
+          <div class="how-step" data-step="2">
+            <div class="step-bar"></div><div class="h-num">03</div>
+            <div class="h-text"><h4>Surface Insights Instantly</h4><p>Ask questions in plain English. Get live answers, trends, and forecasts on demand.</p></div>
+            <div class="h-fill"></div>
+          </div>
+          <div class="how-step" data-step="3">
+            <div class="step-bar"></div><div class="h-num">04</div>
+            <div class="h-text"><h4>Stay Audit-Ready</h4><p>Every action logged, every variance explained, always compliant — automatically.</p></div>
+            <div class="h-fill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="how-right">
+        <div class="how-panel active" data-panel="0">
+          <div class="p-label">Step 01 — Data Integration</div>
+          <div class="erp-grid">
+            <div class="erp-box"><span class="e-icon">🏦</span>NetSuite</div>
+            <div class="erp-box"><span class="e-icon">📊</span>SAP</div>
+            <div class="erp-box"><span class="e-icon">⚡</span>QuickBooks</div>
+            <div class="erp-box"><span class="e-icon">🔷</span>Xero</div>
+            <div class="erp-box"><span class="e-icon">📁</span>Workday</div>
+            <div class="erp-box"><span class="e-icon">✦</span>+40 more</div>
+          </div>
+          <div class="connect-line"></div>
+          <div class="connect-status"><div class="green-dot"></div>6 sources connected · syncing in real-time</div>
+        </div>
+        <div class="how-panel" data-panel="1">
+          <div class="p-label">Step 02 — Automated Close</div>
+          <div class="recon-row"><div class="r-status r-ok">✓</div><span class="r-name">Revenue recognition — Oct</span><span class="r-amt">$2,841,200</span></div>
+          <div class="recon-row"><div class="r-status r-ok">✓</div><span class="r-name">AP / AR reconciliation</span><span class="r-amt">$94,300</span></div>
+          <div class="recon-row"><div class="r-status r-ai">AI</div><span class="r-name">Intercompany eliminations</span><span class="r-amt">$430,000</span></div>
+          <div class="recon-row"><div class="r-status r-ok">✓</div><span class="r-name">Bank statement match</span><span class="r-amt">$1,200,000</span></div>
+          <div class="recon-row"><div class="r-status r-ai">AI</div><span class="r-name">Variance explained — COGS</span><span class="r-amt">−$12,400</span></div>
+          <div class="recon-footer"><div class="green-dot"></div><span><strong>47 items</strong> auto-reconciled · 2 flagged for review</span></div>
+        </div>
+        <div class="how-panel" data-panel="2">
+          <div class="p-label">Step 03 — Natural Language Insights</div>
+          <div class="query-chip">✦ Ask Meeru AI</div>
+          <div class="query-input">"Why did gross margin drop 3% this quarter?"</div>
+          <div class="query-answer">Gross margin declined from <strong>68.2% → 65.1%</strong> due to a <strong>$340K increase in cloud infrastructure costs</strong> (+22% YoY) and a <strong>$120K one-time vendor fee</strong> in October. All other cost lines remain within forecast.</div>
+          <div class="q-metrics">
+            <div class="q-metric"><div class="qv">65.1%</div><div class="ql">Gross Margin</div></div>
+            <div class="q-metric"><div class="qv">−3.1%</div><div class="ql">vs Last Qtr</div></div>
+            <div class="q-metric"><div class="qv">2 items</div><div class="ql">Root Causes</div></div>
+          </div>
+        </div>
+        <div class="how-panel" data-panel="3">
+          <div class="p-label">Step 04 — Audit Trail</div>
+          <div class="audit-item"><div class="a-dot ok">✓</div><div><div class="a-time">Today 09:14 AM</div><div class="a-action">Monthly close completed <span class="a-badge">Auto</span></div></div></div>
+          <div class="audit-item"><div class="a-dot ai">AI</div><div><div class="a-time">Today 09:12 AM</div><div class="a-action">COGS variance explained — $12,400 delta flagged</div></div></div>
+          <div class="audit-item"><div class="a-dot ok">✓</div><div><div class="a-time">Today 08:55 AM</div><div class="a-action">47 reconciliations approved by system</div></div></div>
+          <div class="audit-item"><div class="a-dot ok">✓</div><div><div class="a-time">Yesterday 11:30 PM</div><div class="a-action">Bank feeds synced across 6 accounts</div></div></div>
+          <div class="audit-item"><div class="a-dot ai">AI</div><div><div class="a-time">Yesterday 10:05 PM</div><div class="a-action">Forecast model updated with actuals <span class="a-badge">Auto</span></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal-l">
+      <div class="s-label">About Meeru AI</div>
+      <h2 class="s-title">Built for the<br/><span class="grad-text">Modern CFO</span></h2>
+      <p class="about-text">MeeruAI is an enterprise-grade, agentic finance orchestration solution for the CFO organization. We unify ERPs, apps, and data so agentic automation helps accelerate the close and explains variances.</p>
+      <p>Built-in controls ensure role-based access, guardrails, and auditability. Because agents work alongside your team — as assistant, co-worker, and advisor — you stay firmly in control.</p>
+      <div class="about-chips">
+        <span class="chip">Enterprise-Grade</span>
+        <span class="chip">Agentic AI</span>
+        <span class="chip">ERP Integration</span>
+        <span class="chip">SOC 2 Compliant</span>
+        <span class="chip">Role-Based Access</span>
+        <span class="chip">Real-Time Sync</span>
+      </div>
+    </div>
+    <div class="about-visual reveal-r">
+      <div class="glass-card">
+        <div class="quote">"Meeru" means You.</div>
+        <p>Our belief is simple — <strong>AI should work with people, not replace them.</strong> Agents propose, you decide. We design for collaboration across finance, accounting, and operations so teams can move faster with confidence.</p>
+        <p style="margin-top:1rem"><strong>Why It Matters:</strong> Finance is being asked to do more with less while keeping control intact. Meeru AI helps teams close faster, focus on more strategic work, and trust every number across the finance stack.</p>
+      </div>
+      <div class="float-pill">
+        <div class="dot"></div>
+        <div class="info"><strong>Live &amp; Audit-Ready</strong>Every action logged &amp; traceable</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="tc reveal">
+    <div class="s-label">Why Choose Us</div>
+    <h2 class="s-title">AI Built for<br/><span class="grad-text">Me and You</span></h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal" style="transition-delay:.05s">
+      <div class="why-card-head"><span class="why-icon">🤝</span><h3>AI That Works With You</h3></div>
+      <p>Agents propose, you decide. We design for collaboration across finance, accounting, and operations so teams can move faster with confidence — never feeling replaced.</p>
+    </div>
+    <div class="why-card reveal" style="transition-delay:.1s">
+      <div class="why-card-head"><span class="why-icon">💡</span><h3>Why It Matters</h3></div>
+      <p>Finance is being asked to do more with less while keeping control intact. Meeru AI helps teams close faster, focus on more strategic work, and trust every number across the stack.</p>
+    </div>
+    <div class="why-card reveal" style="transition-delay:.15s">
+      <div class="why-card-head"><span class="why-icon">🔐</span><h3>Built-In Trust &amp; Control</h3></div>
+      <p>Role-based access, audit logs, guardrails, and auditability are built into the core — not bolted on. The speed of AI with the controls finance demands.</p>
+    </div>
+    <div class="why-card reveal" style="transition-delay:.2s">
+      <div class="why-card-head"><span class="why-icon">🌐</span><h3>Universal Connectivity</h3></div>
+      <p>Connect every ERP, data warehouse, and finance app in your stack. Meeru becomes the single intelligent source of truth for your entire financial operation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="tc reveal">
+    <div class="s-label">Get Started</div>
+    <h2 class="s-title"><span class="grad-text">Request Demo</span></h2>
+    <p class="s-sub">Book a live, expert-led 30-minute tour of the Meeru AI platform below.</p>
+  </div>
+  <div class="form-container reveal">
+    <form onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="f-group"><label>First name <span>*</span></label><input type="text" placeholder="Jane" required/></div>
+        <div class="f-group"><label>Last name <span>*</span></label><input type="text" placeholder="Smith" required/></div>
+        <div class="f-group"><label>Work Email <span>*</span></label><input type="email" placeholder="jane@company.com" required/></div>
+        <div class="f-group"><label>Company name <span>*</span></label><input type="text" placeholder="Acme Corp" required/></div>
+        <div class="f-group"><label>Job title <span>*</span></label><input type="text" placeholder="CFO" required/></div>
+        <div class="f-group form-full"><label>What are you hoping to achieve with MeeruAI? <span>*</span></label><textarea placeholder="Tell us about your goals..." required></textarea></div>
+        <div class="f-group form-full"><label>Pain points you'd like us to address?</label><textarea placeholder="Describe any challenges..."></textarea></div>
+      </div>
+      <p class="form-note">By submitting, you consent to our <a href="#">Privacy Policy</a>.</p>
+      <button type="submit" class="btn-submit"><span>Submit ✦</span></button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="f-brand">
+      <div class="f-brand-logo"><img src="logo.svg" alt="MeeruAI" height="40" style="display:block;filter:brightness(0) invert(1)"/></div>
+      <p>The trusted partner for modern finance leaders building audit-ready, strategic operations.</p>
+      <div class="f-socials">
+        <a href="#" class="f-soc">in</a>
+        <a href="#" class="f-soc">𝕏</a>
+        <a href="#" class="f-soc">▶</a>
+      </div>
+    </div>
+    <div class="f-col"><h4>Product</h4><ul><li><a href="#solutions">Solutions</a></li><li><a href="#how">How It Works</a></li><li><a href="#about">About Us</a></li><li><a href="#demo">Request Demo</a></li></ul></div>
+    <div class="f-col"><h4>Company</h4><ul><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li><li><a href="#">Press</a></li><li><a href="#">Partners</a></li></ul></div>
+    <div class="f-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Meeru AI. All rights reserved.</p>
+    <div class="f-bottom-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">Built with love for finance ♥</a></div>
+  </div>
+</footer>
+
+<button id="st" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ── SCROLL PROGRESS BAR ──
+const pb = document.getElementById('progress-bar');
+function updateProgress(){
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  pb.style.width = (scrollY / h * 100) + '%';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+// ── CURSOR GLOW ──
+const cg = document.getElementById('cg');
+document.addEventListener('mousemove', e => { cg.style.left = e.clientX+'px'; cg.style.top = e.clientY+'px' });
+
+// ── STICKY NAV + SCROLL TOP ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', scrollY > 80);
+  document.getElementById('st').classList.toggle('show', scrollY > 500);
+}, {passive:true});
+
+// ── REVEAL ON SCROLL ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target) } });
+}, {threshold:0.1});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+
+// ── TYPEWRITER EFFECT ──
+(function(){
+  const words = ['Human Focus.','Zero Guesswork.','Real Clarity.','Total Control.','Human Focus.'];
+  const el = document.getElementById('tw-word');
+  const cursor = document.getElementById('tw-cursor');
+  let wi = 0, ci = 0, deleting = false;
+  const typeSpeed = 60, deleteSpeed = 35, pauseMs = 1800;
+
+  function type(){
+    const word = words[wi];
+    if(!deleting){
+      el.textContent = word.slice(0, ++ci);
+      if(ci === word.length){ deleting = true; setTimeout(type, pauseMs); return; }
+    } else {
+      el.textContent = word.slice(0, --ci);
+      if(ci === 0){ deleting = false; wi = (wi + 1) % words.length; setTimeout(type, 300); return; }
+    }
+    setTimeout(type, deleting ? deleteSpeed : typeSpeed);
+  }
+  // start after hero animation
+  setTimeout(type, 2200);
+})();
+
+// ── STICKY SCROLL — HOW IT WORKS ──
+(function(){
+  const outer = document.querySelector('.how-outer');
+  const steps = document.querySelectorAll('.how-step');
+  const panels = document.querySelectorAll('.how-panel');
+  const fills = document.querySelectorAll('.h-fill');
+  const TOTAL = steps.length;
+  let cur = 0;
+
+  function setStep(idx, pct){
+    if(idx === cur){ fills[idx].style.width = pct + '%'; return; }
+    steps.forEach((s,i) => {
+      s.classList.toggle('active', i === idx);
+      fills[i].style.width = i < idx ? '100%' : (i === idx ? pct+'%' : '0%');
+    });
+    panels.forEach((p,i) => p.classList.toggle('active', i === idx));
+    cur = idx;
+  }
+
+  window.addEventListener('scroll', () => {
+    if(!outer) return;
+    const rect = outer.getBoundingClientRect();
+    const scrollable = outer.offsetHeight - window.innerHeight;
+    const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+    const sf = progress * TOTAL;
+    const si = Math.min(Math.floor(sf), TOTAL - 1);
+    setStep(si, (sf - si) * 100);
+  }, {passive:true});
+})();
+
+// ── 3D TILT ON CARDS ──
+(function(){
+  const TILT = 12; // max degrees
+  document.querySelectorAll('.bc, .why-card, .how-panel.active, .glass-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `perspective(600px) rotateY(${x*TILT}deg) rotateX(${-y*TILT}deg) translateY(-6px) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+  // re-apply to how-panels dynamically when they become active
+  const panelObs = new MutationObserver(() => {
+    document.querySelectorAll('.how-panel').forEach(card => {
+      if(card._tiltBound) return;
+      card._tiltBound = true;
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+  });
+  const hr = document.querySelector('.how-right');
+  if(hr) panelObs.observe(hr, {attributes:true, subtree:true, attributeFilter:['class']});
+})();
+
+// ── PLATFORM DIAGRAM INTERACTIONS ──
+(function(){
+  var layers = document.querySelectorAll('.pd-layer');
+  var srcBadges = document.querySelectorAll('.pd-src-badge[data-layer]');
+  var procBadges = document.querySelectorAll('.pd-proc-badge[data-layer]');
+
+  function clearAll(){
+    layers.forEach(function(l){ l.classList.remove('pd-active'); });
+    srcBadges.forEach(function(b){ b.classList.remove('pd-lit'); });
+    procBadges.forEach(function(b){ b.classList.remove('pd-lit'); });
+  }
+
+  function activateLayer(name){
+    layers.forEach(function(l){
+      if(l.dataset.layer === name) l.classList.add('pd-active');
+    });
+  }
+
+  srcBadges.forEach(function(b){
+    b.addEventListener('click', function(){
+      var wasLit = b.classList.contains('pd-lit');
+      clearAll();
+      if(!wasLit){ b.classList.add('pd-lit'); activateLayer(b.dataset.layer); }
+    });
+  });
+
+  procBadges.forEach(function(b){
+    b.addEventListener('click', function(){
+      var wasLit = b.classList.contains('pd-lit');
+      clearAll();
+      if(!wasLit){ b.classList.add('pd-lit'); activateLayer(b.dataset.layer); }
+    });
+  });
+
+  layers.forEach(function(l){
+    l.addEventListener('click', function(){
+      var wasActive = l.classList.contains('pd-active');
+      clearAll();
+      if(!wasActive) l.classList.add('pd-active');
+    });
+  });
+})();
+
+// ── COUNTER ANIMATION ──
+function counter(el){
+  const t = +el.dataset.target, dur = 1800;
+  let s = null;
+  const step = ts => {
+    if(!s) s = ts;
+    const p = Math.min((ts - s) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const sfx = el.dataset.suffix || '';
+    el.textContent = Math.round(ease * t) + sfx;
+    if(p < 1) requestAnimationFrame(step);
+    else el.textContent = t + sfx;
+  };
+  requestAnimationFrame(step);
+}
+const cObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.querySelectorAll('[data-target]').forEach(counter); cObs.unobserve(e.target); } });
+}, {threshold:0.5});
+const hs = document.querySelector('.hero-stats');
+if(hs) cObs.observe(hs);
+
+// ── FORM SUBMIT ──
+function handleSubmit(e){
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit span');
+  btn.textContent = '✓ Request Sent!';
+  btn.closest('button').style.background = 'linear-gradient(135deg,#059669,#10b981)';
+  setTimeout(() => {
+    btn.textContent = 'Submit ✦';
+    btn.closest('button').style.background = '';
+    e.target.reset();
+  }, 3500);
+}
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+});
+
+// ── TOAST NOTIFICATIONS ──
+(function(){
+  const messages = [
+    { icon:'⚡', text:'<strong>Stripe</strong> closed their books 4 days faster this month.' },
+    { icon:'🧠', text:'Variance detected &amp; explained in <strong>under 2 seconds</strong>.' },
+    { icon:'✅', text:'<strong>$2.4M</strong> reconciled automatically — zero manual entry.' },
+    { icon:'🛡️', text:'Audit prep reduced from <strong>3 weeks → 4 hours</strong>.' },
+    { icon:'📈', text:'<strong>Rippling</strong> saved 40 finance hours this quarter.' },
+    { icon:'🔗', text:'<strong>6 ERPs</strong> connected and syncing in real-time.' },
+  ];
+  const container = document.getElementById('toast-container');
+  let idx = 0;
+  let triggered = false;
+
+  function showToast(){
+    const msg = messages[idx % messages.length];
+    idx++;
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `
+      <span class="toast-dot"></span>
+      <span class="toast-icon">${msg.icon}</span>
+      <span class="toast-text">${msg.text}</span>
+      <button class="toast-close" onclick="this.closest('.toast').remove()">✕</button>
+    `;
+    container.appendChild(t);
+    requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+    setTimeout(() => {
+      t.classList.remove('show');
+      t.classList.add('hide');
+      setTimeout(() => t.remove(), 500);
+    }, 4500);
+  }
+
+  // trigger first toast when user scrolls past solutions
+  const solSection = document.getElementById('solutions');
+  const toastObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting && !triggered){
+        triggered = true;
+        setTimeout(showToast, 600);
+        setInterval(showToast, 6000);
+        toastObs.disconnect();
+      }
+    });
+  }, {threshold:0.3});
+  if(solSection) toastObs.observe(solSection);
+})();
+</script>
+<script>
+(function(){
+  var items=document.querySelectorAll(".nav-links>li");
+  items.forEach(function(li){
+    var menu=li.querySelector(".drop-menu");
+    if(!menu)return;
+    var t;
+    function show(){clearTimeout(t);menu.classList.add("drop-open");}
+    function hide(){t=setTimeout(function(){menu.classList.remove("drop-open");},180);}
+    li.addEventListener("mouseenter",show);
+    li.addEventListener("mouseleave",hide);
+    menu.addEventListener("mouseenter",show);
+    menu.addEventListener("mouseleave",hide);
+  });
+})();
+</script>
+<script>
+// Feature explorer
+(function(){
+  var items = document.querySelectorAll('.feat-item');
+  var slides = document.querySelectorAll('.feat-slide');
+  items.forEach(function(item){
+    item.addEventListener('mouseenter', function(){
+      var idx = +item.getAttribute('data-feat');
+      items.forEach(function(i){ i.classList.remove('active'); });
+      slides.forEach(function(s){ s.classList.remove('active'); });
+      item.classList.add('active');
+      if(slides[idx]) slides[idx].classList.add('active');
+    });
+  });
+})();
+</script>
+
+<!-- Shared marquee popup -->
+<div id="ct-shared-popup">
+  <div class="ct-pop-quote" id="ct-sp-quote"></div>
+  <div class="ct-pop-meta">
+    <div class="ct-pop-avatar" id="ct-sp-avatar"></div>
+    <div><div class="ct-pop-name" id="ct-sp-name"></div><div class="ct-pop-role" id="ct-sp-role"></div></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var popup = document.getElementById('ct-shared-popup');
+  var spQuote = document.getElementById('ct-sp-quote');
+  var spAvatar = document.getElementById('ct-sp-avatar');
+  var spName = document.getElementById('ct-sp-name');
+  var spRole = document.getElementById('ct-sp-role');
+  var hideTimer;
+
+  document.querySelectorAll('.ct-card').forEach(function(card){
+    var data = card.querySelector('.ct-popup');
+    if(!data) return;
+
+    card.addEventListener('mouseenter', function(){
+      clearTimeout(hideTimer);
+      spQuote.textContent = data.querySelector('.ct-pop-quote').textContent;
+      spAvatar.textContent = data.querySelector('.ct-pop-avatar').textContent;
+      spName.textContent = data.querySelector('.ct-pop-name').textContent;
+      spRole.textContent = data.querySelector('.ct-pop-role').textContent;
+
+      var rect = card.getBoundingClientRect();
+      var left = rect.left + rect.width/2 - 160; // center popup on card
+      // clamp to viewport
+      left = Math.max(10, Math.min(left, window.innerWidth - 330));
+      var top = rect.bottom + 14;
+
+      popup.style.left = left + 'px';
+      popup.style.top = top + 'px';
+      // position arrow relative to card center
+      var arrowLeft = (rect.left + rect.width/2) - left;
+      popup.querySelector('::before'); // can't set via JS, use a real el
+      popup.classList.add('visible');
+    });
+
+    card.addEventListener('mouseleave', function(){
+      hideTimer = setTimeout(function(){ popup.classList.remove('visible'); }, 120);
+    });
+  });
+
+  popup.addEventListener('mouseenter', function(){ clearTimeout(hideTimer); });
+  popup.addEventListener('mouseleave', function(){
+    hideTimer = setTimeout(function(){ popup.classList.remove('visible'); }, 120);
+  });
+})();
+</script>
+</body>
+</html>
