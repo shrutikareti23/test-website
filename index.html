@@ -776,14 +776,36 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
         </div>
       </div>
     </li>
-    <li>
+    <li class="mega-li" id="res-li">
       <a href="#" class="has-drop" onclick="return false">Resources</a>
-      <ul class="drop-menu">
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="careers.html">Careers</a></li>
-        <li><a href="help-center.html">Help Center</a></li>
-        <li><a href="trust-center.html">Trust Center</a></li>
-      </ul>
+      <div class="mega-drop" id="res-drop">
+        <div class="mega-left">
+          <div class="mega-tab active" data-panel="company">Company <span class="mega-tab-arrow">›</span></div>
+          <div class="mega-tab" data-panel="support">Support <span class="mega-tab-arrow">›</span></div>
+        </div>
+        <div class="mega-right">
+          <div class="mega-panel active" id="panel-company">
+            <a href="about.html" class="mega-item">
+              <div class="mega-icon">◉</div>
+              <div><div class="mega-item-title">About Us</div><div class="mega-item-desc">Our mission, story, and the team behind MeeruAI</div></div>
+            </a>
+            <a href="careers.html" class="mega-item">
+              <div class="mega-icon">✦</div>
+              <div><div class="mega-item-title">Careers</div><div class="mega-item-desc">Join us and help shape the future of finance</div></div>
+            </a>
+          </div>
+          <div class="mega-panel" id="panel-support">
+            <a href="help-center.html" class="mega-item">
+              <div class="mega-icon">?</div>
+              <div><div class="mega-item-title">Help Center</div><div class="mega-item-desc">Guides, docs, and answers to common questions</div></div>
+            </a>
+            <a href="trust-center.html" class="mega-item">
+              <div class="mega-icon">🔒</div>
+              <div><div class="mega-item-title">Trust Center</div><div class="mega-item-desc">Security, compliance, and privacy information</div></div>
+            </a>
+          </div>
+        </div>
+      </div>
     </li>
     <li><a href="how-it-works.html">How It Works</a></li>
     <li><a href="request-demo.html" class="nav-cta">Request Demo</a></li>
@@ -1521,10 +1543,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     menu.addEventListener("mouseleave",hide);
   });
 
-  // Mega menu
-  var megaLi=document.querySelector(".mega-li");
-  if(megaLi){
+  // Mega menus (Platform + Resources)
+  document.querySelectorAll(".mega-li").forEach(function(megaLi){
     var megaDrop=megaLi.querySelector(".mega-drop");
+    if(!megaDrop) return;
     var t2;
     function showMega(){clearTimeout(t2);megaDrop.classList.add("drop-open");}
     function hideMega(){t2=setTimeout(function(){megaDrop.classList.remove("drop-open");},180);}
@@ -1535,16 +1557,17 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
     // Tab switching
     var tabs=megaDrop.querySelectorAll(".mega-tab");
+    var panels=megaDrop.querySelectorAll(".mega-panel");
     tabs.forEach(function(tab){
       tab.addEventListener("mouseenter",function(){
         tabs.forEach(function(t){t.classList.remove("active");});
-        document.querySelectorAll(".mega-panel").forEach(function(p){p.classList.remove("active");});
+        panels.forEach(function(p){p.classList.remove("active");});
         tab.classList.add("active");
-        var panel=document.getElementById("panel-"+tab.dataset.panel);
+        var panel=megaDrop.querySelector("#panel-"+tab.dataset.panel);
         if(panel) panel.classList.add("active");
       });
     });
-  }
+  });
 })();
 </script>
 <script>
