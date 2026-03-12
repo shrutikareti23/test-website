@@ -27,12 +27,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 ::-webkit-scrollbar-track{background:#f0f0f0}
 ::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
 
-/* ── SCROLL PROGRESS BAR ── */
-#progress-bar{
-  position:fixed;top:0;left:0;height:3px;width:0%;z-index:9999;
-  background:var(--grad);transition:width 0.05s linear;
-  box-shadow:0 0 10px rgba(124,58,237,0.5)
-}
 
 /* ── CURSOR GLOW ── */
 .cursor-glow{
@@ -677,8 +671,6 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
 </head>
 <body>
 
-<!-- SCROLL PROGRESS -->
-<div id="progress-bar"></div>
 
 <div class="cursor-glow" id="cg"></div>
 
@@ -1191,13 +1183,6 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
 <div class="toast-container" id="toast-container"></div>
 
 <script>
-// ── SCROLL PROGRESS BAR ──
-const pb = document.getElementById('progress-bar');
-function updateProgress(){
-  const h = document.documentElement.scrollHeight - window.innerHeight;
-  pb.style.width = (scrollY / h * 100) + '%';
-}
-window.addEventListener('scroll', updateProgress, {passive:true});
 
 // ── CURSOR GLOW ──
 const cg = document.getElementById('cg');
