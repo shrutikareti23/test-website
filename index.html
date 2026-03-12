@@ -293,16 +293,15 @@ section{padding:7rem 5%;position:relative}
 /* Connectors */
 .pd-conn{display:flex;align-items:center;justify-content:center;overflow:visible}
 /* Center */
-.pd-center-wrap{display:flex;flex-direction:column;align-items:center;gap:.4rem}
-.pd-meeru-lbl{font-size:1.05rem;font-weight:900;color:#0f172a;letter-spacing:.02em;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+.pd-center-wrap{display:flex;flex-direction:column;align-items:center;gap:0;border:1.5px solid #e2e8f0;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);width:100%}
+.pd-meeru-lbl{font-size:1rem;font-weight:900;color:#0f172a;letter-spacing:.02em;display:flex;align-items:center;gap:.5rem;padding:.9rem 1.4rem;border-bottom:1.5px solid #e2e8f0;width:100%;justify-content:center}
 .pd-meeru-dot{width:8px;height:8px;border-radius:50%;background:var(--grad);display:inline-block;animation:mDot 2s ease-in-out infinite}
 @keyframes mDot{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.3)}}
-.pd-stack{display:flex;flex-direction:column;width:100%;gap:2px}
-.pd-layer{padding:.75rem 1.4rem;cursor:pointer;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#475569;background:#fff;border:1.5px solid #e2e8f0;transition:all .2s}
-.pd-layer:first-child{border-radius:8px 8px 0 0}
-.pd-layer:last-child{border-radius:0 0 8px 8px}
-.pd-layer:hover{background:#f1f5f9;border-color:#cbd5e1;color:#1e293b}
-.pd-layer.pd-active{background:#eef2ff;border-color:#6366f1;color:#3730a3;box-shadow:0 2px 8px rgba(99,102,241,.15)}
+.pd-stack{display:flex;flex-direction:column;width:100%;gap:0}
+.pd-layer{padding:.75rem 1.4rem;cursor:pointer;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#475569;background:#fff;border-bottom:1.5px solid #f1f5f9;transition:all .2s;border-left:3px solid transparent}
+.pd-layer:last-child{border-bottom:none}
+.pd-layer:hover{background:#f8fafc;color:#1e293b;border-left-color:#a5b4fc}
+.pd-layer.pd-active{background:#eef2ff;color:#4f46e5;border-left-color:#6366f1}
 /* Process */
 .pd-process-col{display:flex;flex-direction:column;align-items:flex-start;gap:.45rem}
 .pd-proc-col-title{font-size:.6rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#94a3b8;margin-bottom:.3rem}
@@ -360,8 +359,13 @@ section{padding:7rem 5%;position:relative}
 
 .fv-integrations{display:flex;flex-wrap:wrap;gap:.5rem}
 .fv-pill{background:#fff;border:1px solid var(--border);border-radius:8px;padding:.4rem .8rem;font-size:.78rem;font-weight:600;color:var(--text)}
+.fv-logo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.fv-logo-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:.7rem .6rem;display:flex;flex-direction:column;align-items:center;gap:.3rem;font-size:.72rem;font-weight:600;color:var(--text)}
+.fv-logo-card img{width:32px;height:32px;object-fit:contain}
+.fv-logo-more{justify-content:center;background:rgba(124,58,237,.05);border-color:rgba(124,58,237,.2)}
+.fv-conn-badge{font-size:.62rem;color:#059669;background:rgba(16,185,129,.1);border-radius:50px;padding:.1rem .45rem;font-weight:700}
 
-.fv-bars{display:flex;align-items:flex-end;gap:6px;height:70px}
+.fv-bars{display:flex;align-items:flex-end;gap:6px;height:120px}
 .fv-b{border-radius:5px 5px 0 0;background:rgba(124,58,237,0.15)}
 .fv-b.on{background:linear-gradient(180deg,#7c3aed,#06b6d4)}
 
@@ -435,6 +439,7 @@ section{padding:7rem 5%;position:relative}
 }
 .erp-box:hover{border-color:rgba(124,58,237,0.3);background:rgba(124,58,237,0.04);transform:translateY(-2px)}
 .erp-box .e-icon{font-size:1.4rem;display:block;margin-bottom:0.4rem}
+.erp-box .e-logo{width:36px;height:36px;object-fit:contain;display:block;margin:0 auto 0.4rem}
 .connect-line{height:2px;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.4),transparent);border-radius:2px;margin-bottom:1rem}
 .connect-status{
   display:flex;align-items:center;gap:0.6rem;
@@ -724,7 +729,7 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
   <div class="hero-inner">
-    <div class="hero-badge">✦ AI-Powered Financial Intelligence</div>
+    <div class="hero-badge">✦ AI-Native Finance Operations Center</div>
     <h1>Financial Clarity.<br/><span class="tw-word" id="tw-word">Human Focus.</span><span class="tw-cursor" id="tw-cursor"></span></h1>
     <p>
       Meeru AI unifies your financial data into one intelligent, agentic platform.
@@ -931,8 +936,13 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
           <p class="feat-slide-desc">50+ pre-built connectors. Two-way sync. No dev work required — map fields yourself and go live in under a day.</p>
         </div>
         <div class="feat-slide-vis">
-          <div class="fv-integrations">
-            <span class="fv-pill">QuickBooks</span><span class="fv-pill">NetSuite</span><span class="fv-pill">Sage</span><span class="fv-pill">SAP</span><span class="fv-pill">Xero</span><span class="fv-pill">Stripe</span><span class="fv-pill">Plaid</span><span class="fv-pill">Salesforce</span><span class="fv-pill">+ 40 more</span>
+          <div class="fv-logo-grid">
+            <div class="fv-logo-card"><img src="quickbooks.png" alt="QuickBooks"/><span>QuickBooks</span><span class="fv-conn-badge">Connected</span></div>
+            <div class="fv-logo-card"><img src="netsuite.jpg" alt="NetSuite"/><span>NetSuite</span><span class="fv-conn-badge">Connected</span></div>
+            <div class="fv-logo-card"><img src="sap.jpg" alt="SAP"/><span>SAP</span><span class="fv-conn-badge">Connected</span></div>
+            <div class="fv-logo-card"><img src="xero.png" alt="Xero"/><span>Xero</span><span class="fv-conn-badge">Connected</span></div>
+            <div class="fv-logo-card"><img src="workday.png" alt="Workday"/><span>Workday</span><span class="fv-conn-badge">Connected</span></div>
+            <div class="fv-logo-card fv-logo-more"><span style="font-size:1.2rem;font-weight:800;color:var(--purple)">+40</span><span>more</span></div>
           </div>
         </div>
       </div>
@@ -950,6 +960,9 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
             <div class="fv-metric"><div class="fv-metric-n">99.8%</div><div class="fv-metric-l">data accuracy</div></div>
             <div class="fv-metric"><div class="fv-metric-n">$2B+</div><div class="fv-metric-l">reconciled/mo</div></div>
           </div>
+          <div class="fv-row" style="margin-top:.7rem"><span class="fv-row-label">Revenue — Oct</span><span class="fv-row-badge">↑ 12% MoM</span><span class="fv-row-val">$4.2M</span></div>
+          <div class="fv-row"><span class="fv-row-label">Operating Expenses</span><span class="fv-row-badge">On budget</span><span class="fv-row-val">$1.8M</span></div>
+          <div class="fv-row"><span class="fv-row-label">Net Cash Position</span><span class="fv-row-badge">↑ 8% WoW</span><span class="fv-row-val">$6.1M</span></div>
         </div>
       </div>
 
@@ -973,6 +986,9 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
             <div class="fv-b on" style="height:25%;flex:1;opacity:.4;border:1.5px dashed #7c3aed;background:transparent"></div>
           </div>
           <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem">Actuals (solid) vs. rolling forecast (dashed) — updates automatically</p>
+          <div class="fv-row" style="margin-top:.7rem"><span class="fv-row-label">Q4 Revenue Forecast</span><span class="fv-row-badge">+3% vs plan</span><span class="fv-row-val">$12.4M</span></div>
+          <div class="fv-row"><span class="fv-row-label">Headcount Budget</span><span class="fv-row-badge">On track</span><span class="fv-row-val">42 FTEs</span></div>
+          <div class="fv-row"><span class="fv-row-label">Runway (cash)</span><span class="fv-row-badge">Updated today</span><span class="fv-row-val">18 mo</span></div>
         </div>
       </div>
 
@@ -989,6 +1005,8 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
             <li><span class="fv-check-dot"></span>GAAP &amp; IFRS aligned reporting</li>
             <li><span class="fv-check-dot"></span>Full change log with user attribution</li>
             <li><span class="fv-check-dot"></span>One-click audit export package</li>
+            <li><span class="fv-check-dot"></span>Role-based access controls</li>
+            <li><span class="fv-check-dot"></span>Automated variance explanations</li>
           </ul>
         </div>
       </div>
@@ -1031,11 +1049,11 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
         <div class="how-panel active" data-panel="0">
           <div class="p-label">Step 01 — Data Integration</div>
           <div class="erp-grid">
-            <div class="erp-box"><span class="e-icon">🏦</span>NetSuite</div>
-            <div class="erp-box"><span class="e-icon">📊</span>SAP</div>
-            <div class="erp-box"><span class="e-icon">⚡</span>QuickBooks</div>
-            <div class="erp-box"><span class="e-icon">🔷</span>Xero</div>
-            <div class="erp-box"><span class="e-icon">📁</span>Workday</div>
+            <div class="erp-box"><img class="e-logo" src="netsuite.jpg" alt="NetSuite"/>NetSuite</div>
+            <div class="erp-box"><img class="e-logo" src="sap.jpg" alt="SAP"/>SAP</div>
+            <div class="erp-box"><img class="e-logo" src="quickbooks.png" alt="QuickBooks"/>QuickBooks</div>
+            <div class="erp-box"><img class="e-logo" src="xero.png" alt="Xero"/>Xero</div>
+            <div class="erp-box"><img class="e-logo" src="workday.png" alt="Workday"/>Workday</div>
             <div class="erp-box"><span class="e-icon">✦</span>+40 more</div>
           </div>
           <div class="connect-line"></div>
