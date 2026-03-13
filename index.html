@@ -85,15 +85,14 @@ nav.scrolled{background:rgba(255,255,255,0.92);border-color:rgba(1,48,96,0.15);b
   display:flex;min-width:580px;overflow:hidden
 }
 .mega-drop.drop-open{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-/* Platform flat grid */
-.plat-drop{min-width:720px;display:block}
-.plat-body{padding:1.4rem 1.5rem}
-.plat-section-label{font-size:0.68rem;font-weight:600;letter-spacing:0.09em;color:var(--muted);text-transform:uppercase;margin-bottom:0.75rem}
-.plat-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-bottom:0.25rem}
-.plat-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:0.25rem}
-.plat-divider{height:1px;background:var(--border);margin:1rem 0}
-.plat-item{display:flex;align-items:flex-start;gap:0.75rem;padding:0.6rem 0.75rem;border-radius:10px;text-decoration:none;transition:background 0.15s;border:1px solid transparent}
-.plat-item:hover{background:var(--bg2);border-color:var(--border)}
+/* Platform two-column layout */
+.plat-drop{min-width:660px;display:block}
+.plat-cols{display:flex;gap:0}
+.plat-col{flex:1;padding:1.2rem 1.1rem}
+.plat-col+.plat-col{border-left:1px solid var(--border)}
+.plat-section-label{font-size:0.68rem;font-weight:600;letter-spacing:0.09em;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;padding:0 0.4rem}
+.plat-item{display:flex;align-items:flex-start;gap:0.75rem;padding:0.6rem 0.75rem;border-radius:10px;text-decoration:none;transition:background 0.15s;}
+.plat-item:hover{background:var(--bg2)}
 /* Resources tabs */
 .mega-left{width:190px;background:#f8f9fc;padding:0.6rem;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
 .mega-tab{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-radius:10px;cursor:pointer;font-size:0.88rem;font-weight:400;color:var(--muted);transition:background 0.15s,color 0.15s;user-select:none}
@@ -720,9 +719,9 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
     <li class="mega-li">
       <a href="#" class="has-drop" onclick="return false">Platform</a>
       <div class="mega-drop plat-drop">
-        <div class="plat-body">
-          <div class="plat-section-label">Capabilities</div>
-          <div class="plat-grid-2">
+        <div class="plat-cols">
+          <div class="plat-col">
+            <div class="plat-section-label">Capabilities</div>
             <a href="agentic-suites.html" class="plat-item">
               <div class="mega-icon">⬡</div>
               <div><div class="mega-item-title">Agentic Suites</div><div class="mega-item-desc">End-to-end autonomous finance agents</div></div>
@@ -740,9 +739,8 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
               <div><div class="mega-item-title">AI Work Benches</div><div class="mega-item-desc">Collaborative AI workspaces for finance</div></div>
             </a>
           </div>
-          <div class="plat-divider"></div>
-          <div class="plat-section-label">Automation</div>
-          <div class="plat-grid-3">
+          <div class="plat-col">
+            <div class="plat-section-label">Automation</div>
             <a href="reconciliation.html" class="plat-item">
               <div class="mega-icon">⇄</div>
               <div><div class="mega-item-title">Reconciliation</div><div class="mega-item-desc">AI-powered transaction matching</div></div>

@@ -84,6 +84,13 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none}
 .mega-icon{width:34px;height:34px;border-radius:8px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;color:var(--purple)}
 .mega-item-title{font-size:0.84rem;font-weight:500;color:var(--dark);margin-bottom:1px}
 .mega-item-desc{font-size:0.73rem;color:var(--muted);font-weight:300;line-height:1.4}
+.plat-drop{min-width:660px;display:block}
+.plat-cols{display:flex;gap:0}
+.plat-col{flex:1;padding:1.2rem 1.1rem}
+.plat-col+.plat-col{border-left:1px solid var(--border)}
+.plat-section-label{font-size:0.68rem;font-weight:600;letter-spacing:0.09em;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;padding:0 0.4rem}
+.plat-item{display:flex;align-items:flex-start;gap:0.75rem;padding:0.6rem 0.75rem;border-radius:10px;text-decoration:none;transition:background 0.15s;}
+.plat-item:hover{background:var(--bg2)}
 </style>
 </head>
 <body>
@@ -91,24 +98,58 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none}
 <nav>
   <a href="index.html" class="nav-logo"><img src="logo.svg" alt="MeeruAI" height="52" style="display:block"/></a>
   <ul class="nav-links">
-    <li>
+    <li class="mega-li">
       <a href="#" class="has-drop" onclick="return false">Platform</a>
-      <ul class="drop-menu drop-wide">
-        <li class="drop-section-title">Capabilities</li>
-        <li class="drop-section-title">Automation</li>
-        <li><a href="agentic-suites.html">Agentic Suites</a></li>
-        <li><a href="reconciliation.html">Reconciliation</a></li>
-        <li><a href="autonomy-studio.html">Autonomy Studio</a></li>
-        <li><a href="saas-spend.html">SaaS Spend</a></li>
-        <li><a href="private-small-model.html">Private Small Model</a></li>
-        <li><a href="flux.html">Flux</a></li>
-        <li><a href="ai-work-benches.html">AI Work Benches</a></li>
-        <li><a href="close.html">Close</a></li>
-        <li></li>
-        <li><a href="cash-application.html">Cash Application</a></li>
-        <li></li>
-        <li><a href="cash-collection.html">Cash Collection</a></li>
-      </ul>
+      <div class="mega-drop plat-drop">
+        <div class="plat-cols">
+          <div class="plat-col">
+            <div class="plat-section-label">Capabilities</div>
+            <a href="agentic-suites.html" class="plat-item">
+              <div class="mega-icon">⬡</div>
+              <div><div class="mega-item-title">Agentic Suites</div><div class="mega-item-desc">End-to-end autonomous finance agents</div></div>
+            </a>
+            <a href="autonomy-studio.html" class="plat-item">
+              <div class="mega-icon">⚙</div>
+              <div><div class="mega-item-title">Autonomy Studio</div><div class="mega-item-desc">Build and deploy custom AI agents</div></div>
+            </a>
+            <a href="private-small-model.html" class="plat-item">
+              <div class="mega-icon">🔒</div>
+              <div><div class="mega-item-title">Private Small Model</div><div class="mega-item-desc">Your data, your environment, your model</div></div>
+            </a>
+            <a href="ai-work-benches.html" class="plat-item">
+              <div class="mega-icon">◈</div>
+              <div><div class="mega-item-title">AI Work Benches</div><div class="mega-item-desc">Collaborative AI workspaces for finance</div></div>
+            </a>
+          </div>
+          <div class="plat-col">
+            <div class="plat-section-label">Automation</div>
+            <a href="reconciliation.html" class="plat-item">
+              <div class="mega-icon">⇄</div>
+              <div><div class="mega-item-title">Reconciliation</div><div class="mega-item-desc">AI-powered transaction matching</div></div>
+            </a>
+            <a href="saas-spend.html" class="plat-item">
+              <div class="mega-icon">◎</div>
+              <div><div class="mega-item-title">SaaS Spend</div><div class="mega-item-desc">Subscription visibility &amp; renewals</div></div>
+            </a>
+            <a href="flux.html" class="plat-item">
+              <div class="mega-icon">∿</div>
+              <div><div class="mega-item-title">Flux</div><div class="mega-item-desc">Variance analysis &amp; narratives</div></div>
+            </a>
+            <a href="close.html" class="plat-item">
+              <div class="mega-icon">✓</div>
+              <div><div class="mega-item-title">Close</div><div class="mega-item-desc">Accelerate month-end close</div></div>
+            </a>
+            <a href="cash-application.html" class="plat-item">
+              <div class="mega-icon">↓</div>
+              <div><div class="mega-item-title">Cash Application</div><div class="mega-item-desc">Auto-match payments to invoices</div></div>
+            </a>
+            <a href="cash-collection.html" class="plat-item">
+              <div class="mega-icon">↻</div>
+              <div><div class="mega-item-title">Cash Collection</div><div class="mega-item-desc">AI-driven collections &amp; DSO reduction</div></div>
+            </a>
+          </div>
+        </div>
+      </div>
     </li>
     <li class="mega-li">
       <a href="#" class="has-drop" onclick="return false">Resources</a>
