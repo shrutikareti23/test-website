@@ -398,11 +398,24 @@ section{padding:7rem 5%;position:relative}
 .fv-logo-more{justify-content:center;background:rgba(1,48,96,.05);border-color:rgba(1,48,96,.2)}
 .fv-conn-badge{font-size:.62rem;color:#059669;background:rgba(16,185,129,.1);border-radius:50px;padding:.1rem .45rem;font-weight:400}
 
-.fv-bars{display:flex;align-items:flex-end;gap:5px;height:160px;padding:0 4px;position:relative;border-bottom:1.5px solid var(--border)}
-.fv-bars::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent calc(50% - 1px),rgba(0,0,0,0.04) calc(50% - 1px),rgba(0,0,0,0.04) 50%);pointer-events:none}
-.fv-b{border-radius:5px 5px 0 0;background:rgba(1,48,96,0.12);transform-origin:bottom;animation:barGrow 0.7s ease both}
-.fv-b.on{background:linear-gradient(180deg,#013060,#E97131)}
-.fv-b.dash{background:transparent;border:1.5px dashed rgba(1,48,96,0.35);border-bottom:none}
+.fv-chart-wrap{position:relative;display:flex;gap:6px;align-items:stretch}
+.fv-yaxis{display:flex;flex-direction:column;justify-content:space-between;padding-bottom:22px;padding-top:4px}
+.fv-yaxis span{font-size:.6rem;color:var(--muted);text-align:right;line-height:1;white-space:nowrap}
+.fv-chart-inner{flex:1;display:flex;flex-direction:column;gap:0}
+.fv-grid{position:relative;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.fv-gridline{position:absolute;left:0;right:0;border-top:1px dashed rgba(0,0,0,0.08)}
+.fv-gridline:nth-child(1){top:0%}
+.fv-gridline:nth-child(2){top:25%}
+.fv-gridline:nth-child(3){top:50%}
+.fv-gridline:nth-child(4){top:75%}
+.fv-bars{display:flex;align-items:flex-end;gap:5px;height:160px;padding:0 4px;position:relative;border-bottom:2px solid rgba(1,48,96,0.15)}
+.fv-b{border-radius:5px 5px 0 0;background:rgba(1,48,96,0.1);transform-origin:bottom;animation:barGrow 0.7s ease both;position:relative}
+.fv-b.on{background:linear-gradient(180deg,#013060 0%,#1a5a9a 50%,#E97131 100%)}
+.fv-b.dash{background:transparent;border:1.5px dashed rgba(1,48,96,0.3);border-bottom:none}
+.fv-b-cur-label{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:.58rem;font-weight:500;color:#013060;white-space:nowrap;background:#fff;border:1px solid rgba(1,48,96,0.2);border-radius:4px;padding:1px 5px}
+.fv-months{display:flex;gap:5px;padding:0 4px;margin-top:4px}
+.fv-month{flex:1;text-align:center;font-size:.58rem;color:var(--muted);font-weight:300}
+.fv-month.on{color:#013060;font-weight:500}
 @keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 
 .fv-metric-row{display:flex;gap:1.5rem}
@@ -1057,20 +1070,49 @@ footer{background:var(--dark);color:#fff;padding:5rem 5% 2.5rem}
           <p class="feat-slide-desc">Rolling budgets, headcount planning, and what-if scenarios — all connected to your actuals so they never go stale.</p>
         </div>
         <div class="feat-slide-vis">
-          <div class="fv-bars">
-            <div class="fv-b" style="height:52%;flex:1;animation-delay:.05s"></div>
-            <div class="fv-b" style="height:65%;flex:1;animation-delay:.1s"></div>
-            <div class="fv-b" style="height:55%;flex:1;animation-delay:.15s"></div>
-            <div class="fv-b" style="height:82%;flex:1;animation-delay:.2s"></div>
-            <div class="fv-b" style="height:70%;flex:1;animation-delay:.25s"></div>
-            <div class="fv-b on" style="height:58%;flex:1;animation-delay:.3s"></div>
-            <div class="fv-b on" style="height:50%;flex:1;animation-delay:.35s"></div>
-            <div class="fv-b dash" style="height:62%;flex:1;animation-delay:.4s"></div>
-            <div class="fv-b dash" style="height:72%;flex:1;animation-delay:.45s"></div>
+          <div class="fv-chart-wrap">
+            <div class="fv-yaxis">
+              <span>$16M</span>
+              <span>$12M</span>
+              <span>$8M</span>
+              <span>$4M</span>
+              <span>$0</span>
+            </div>
+            <div class="fv-chart-inner">
+              <div style="position:relative;height:160px">
+                <div class="fv-gridline" style="top:0%"></div>
+                <div class="fv-gridline" style="top:25%"></div>
+                <div class="fv-gridline" style="top:50%"></div>
+                <div class="fv-gridline" style="top:75%"></div>
+                <div class="fv-bars" style="position:absolute;inset:0;height:100%">
+                  <div class="fv-b" style="height:40%;flex:1;animation-delay:.05s"></div>
+                  <div class="fv-b" style="height:52%;flex:1;animation-delay:.1s"></div>
+                  <div class="fv-b" style="height:47%;flex:1;animation-delay:.15s"></div>
+                  <div class="fv-b" style="height:62%;flex:1;animation-delay:.2s"></div>
+                  <div class="fv-b" style="height:58%;flex:1;animation-delay:.25s"></div>
+                  <div class="fv-b on" style="height:68%;flex:1;animation-delay:.3s"><span class="fv-b-cur-label">Oct $10.8M</span></div>
+                  <div class="fv-b on" style="height:75%;flex:1;animation-delay:.35s"></div>
+                  <div class="fv-b dash" style="height:80%;flex:1;animation-delay:.4s"></div>
+                  <div class="fv-b dash" style="height:86%;flex:1;animation-delay:.45s"></div>
+                </div>
+              </div>
+              <div class="fv-months">
+                <div class="fv-month">Jun</div>
+                <div class="fv-month">Jul</div>
+                <div class="fv-month">Aug</div>
+                <div class="fv-month">Sep</div>
+                <div class="fv-month">Oct</div>
+                <div class="fv-month on">Nov</div>
+                <div class="fv-month on">Dec</div>
+                <div class="fv-month" style="color:rgba(1,48,96,0.4)">Jan</div>
+                <div class="fv-month" style="color:rgba(1,48,96,0.4)">Feb</div>
+              </div>
+            </div>
           </div>
-          <div style="display:flex;gap:1.2rem;margin-top:.55rem;font-size:.72rem;color:var(--muted)">
-            <span style="display:flex;align-items:center;gap:.35rem"><span style="width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,#013060,#E97131);display:inline-block"></span>Actuals</span>
-            <span style="display:flex;align-items:center;gap:.35rem"><span style="width:10px;height:10px;border-radius:3px;border:1.5px dashed rgba(1,48,96,0.5);display:inline-block"></span>Forecast</span>
+          <div style="display:flex;gap:1.4rem;margin-top:.6rem;font-size:.72rem;color:var(--muted);align-items:center">
+            <span style="display:flex;align-items:center;gap:.35rem"><span style="width:12px;height:12px;border-radius:3px;background:linear-gradient(135deg,#013060,#E97131);display:inline-block;flex-shrink:0"></span>Actuals</span>
+            <span style="display:flex;align-items:center;gap:.35rem"><span style="width:12px;height:12px;border-radius:3px;border:1.5px dashed rgba(1,48,96,0.5);display:inline-block;flex-shrink:0"></span>Forecast</span>
+            <span style="margin-left:auto;font-size:.65rem;background:rgba(16,185,129,0.1);color:#059669;border-radius:50px;padding:.15rem .6rem;font-weight:400">↑ +3% vs plan</span>
           </div>
           <div class="fv-row" style="margin-top:.7rem"><span class="fv-row-label">Q4 Revenue Forecast</span><span class="fv-row-badge">+3% vs plan</span><span class="fv-row-val">$12.4M</span></div>
           <div class="fv-row"><span class="fv-row-label">Headcount Budget</span><span class="fv-row-badge">On track</span><span class="fv-row-val">42 FTEs</span></div>
